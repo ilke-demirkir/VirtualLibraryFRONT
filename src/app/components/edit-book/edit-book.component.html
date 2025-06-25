@@ -1,0 +1,14 @@
+<h2>Edit Book</h2>
+
+<form (ngSubmit)="save()">
+  <label>Name:</label>
+  <input [(ngModel)]="book.name" name="name" required />
+
+  <label>Year:</label>
+  <input [(ngModel)]="book.year" type="number" name="year" required />
+
+  <label>Favorite:</label>
+  <input [(ngModel)]="book.fav" type="checkbox" name="fav" />
+
+  <button type="submit">Save</button>
+</form>

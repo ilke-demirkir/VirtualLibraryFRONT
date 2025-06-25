@@ -1,0 +1,15 @@
+<h2> Book List</h2>
+
+<input
+  type="text"
+  [(ngModel)]="searchTerm"
+  (input)="filterBooks()"
+  placeholder="Search by name..."
+/>
+
+<ul>
+  <li *ngFor="let book of filteredBooks">
+    {{ book.name }} ({{ book.year }})
+    <button (click)="editBook(book.id)">Edit</button>
+  </li>
+</ul>

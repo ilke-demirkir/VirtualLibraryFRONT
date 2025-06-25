@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { BookService } from '../../services/bookService';
 import { Book } from '../../models/book.model';
 import {FormsModule} from '@angular/forms';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-add-book',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule,RouterLink],
   standalone: true,
   templateUrl: './add-book.component.html',
   styleUrl: './add-book.component.css'
