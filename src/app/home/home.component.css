@@ -1,0 +1,24 @@
+.heart{
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: 0.2;
+}
+
+.heart:hover{
+    transform:scale(1.5);
+}
+
+.fav-heart{
+    outline: 1px dahsed black; 
+    color:crimson;
+}
+
+.fav {
+    color: green;
+    font-style: bold;
+}
+
+a{
+    cursor: pointer;
+    padding-right:10px;
+}

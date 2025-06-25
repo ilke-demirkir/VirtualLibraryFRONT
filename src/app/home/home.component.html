@@ -1,0 +1,21 @@
+<p>home works!</p>
+
+<button (click) = 'isVisible = !isVisible'> ngIf control </button>
+<p style="color: red">THIS IS HOME</p>
+
+<p *ngIf = "isVisible"> This shit works</p>
+
+<p class = 'agalar'> List of Books</p>
+
+<ul>
+    <li *ngFor="let book of books$ | async">
+        <span [ngClass]="{fav:book.fav}">
+        <a> {{book.name}} written in {{book.year}}</a>
+        <button  (click) ="goToChild(book)"> 
+            View {{book.name}} details here
+        </button>
+        </span>
+    </li>
+</ul>
+
+

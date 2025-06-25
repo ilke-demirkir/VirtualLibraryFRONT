@@ -1,0 +1,10 @@
+<h2>Add Book</h2>
+<form (ngSubmit)="submitBook()" (submit)="onRawSubmit($event)">
+  <label>Name:
+    <input [(ngModel)]="book.name" name="name" required />
+  </label><br />
+  <label>Year:
+    <input type="number" [(ngModel)]="book.year" name="year" required />
+  </label><br />
+  <button type="submit">Add Book</button>
+</form>
