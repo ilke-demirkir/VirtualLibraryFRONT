@@ -101,4 +101,8 @@ export class BookService{
             })
         );
     }
+
+    getPopularCategories(limit = 6): Observable<{category: string, count: number}[]> {
+        return this.http.get<{category: string, count: number}[]>(`https://localhost:5038/api/books/popular?limit=${limit}`);
+    }
 }

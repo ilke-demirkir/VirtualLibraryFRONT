@@ -1,0 +1,17 @@
+<div class="user-profile-container" *ngIf="!loading; else loadingTpl">
+  <div class="profile-card">
+    <img [src]="avatarUrl" class="avatar" alt="User avatar" />
+    <div class="profile-info">
+      <h2 class="username">{{ user?.username || '—' }}</h2>
+      <div class="email">{{ user?.email || '—' }}</div>
+      <div class="bio">{{ bio }}</div>
+      <div class="created-at">
+        <span class="label">Member since:</span>
+        <span>{{ createdAt }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #loadingTpl>
+  <div class="profile-loading">Loading profile…</div>
+</ng-template> 

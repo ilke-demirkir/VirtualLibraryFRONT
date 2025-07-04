@@ -5,6 +5,10 @@ export interface User{
     password: string;
     isAdmin?: boolean; // Optional property to indicate if the user is an admin
     token?: string; // Optional property for authentication token
+    // Optional profile fields
+    avatarUrl?: string | null;   // URL to user's avatar image
+    bio?: string | null;         // Short user bio or description
+    createdAt?: string | null;   // ISO date string for account creation
 }
 
 export interface LoginRequest {

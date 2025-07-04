@@ -8,6 +8,7 @@ import { OrderService } from './services/orderService';
 import { Observable } from 'rxjs';
 import { OrderSummary } from './models/order.model';
 import { OnInit } from '@angular/core';
+import { User } from './models/user.model';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, RouterLink, CommonModule, ToastComponent],
@@ -17,11 +18,14 @@ import { OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'angular-route-test';
   orders$!: Observable<OrderSummary[]>;
+  user$!:Observable<User>;
   constructor(public auth:AuthService, public cartService:CartService, public orderService:OrderService){}
 
   ngOnInit() {
     if(this.auth.isLoggedIn()) {
       this.orders$ = this.orderService.list();
+      this.user$ = this.auth.getCurrentUser();
     }
+
   }
 }

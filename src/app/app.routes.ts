@@ -70,7 +70,13 @@ export const routes: Routes = [
     { 
         path: 'orders/:id',      
         loadComponent: () => import('./components/order-detail/order-detail.component').then(m => m.OrderDetailComponent),   
-        canActivate:[AuthGuard] },
+        canActivate:[AuthGuard] 
+    },
+    {
+        path: "user-profile",
+        loadComponent: () => import('./components/user-profile/user-profile.component').then(m => m.UserProfileComponent),
+        canActivate: [AuthGuard] // Assuming you have an AuthGuard implemented
+    }
 
 
 

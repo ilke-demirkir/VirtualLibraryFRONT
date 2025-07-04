@@ -23,8 +23,17 @@
     </ng-container>
     <a *ngIf="!auth.isLoggedIn()" routerLink="/login" class="nav-btn">Login</a>
     <a *ngIf="!auth.isLoggedIn()" routerLink="/register" class="nav-btn">Register</a>
+    <a *ngIf="auth.isLoggedIn()" routerLink="/user-profile" routerLinkActive="active" class="nav-btn">
+      <span * class="user-icon">👤</span> Profile
+    </a>
     <button *ngIf="auth.isLoggedIn()" (click)="auth.logout()" class="nav-btn">Logout</button>
   </div>
+  <div class="navbar-right">
+    <span class="user-greeting" *ngIf="user$ | async as user" >Hello, {{ user.username }}!</span>
+    <span class="user-role" *ngIf="auth.isAdmin()">[Admin]</span>
+  </div>
 </nav>
-<router-outlet></router-outlet>
+<div class="main-content">
+  <router-outlet></router-outlet>
+</div>
 <app-toast></app-toast>

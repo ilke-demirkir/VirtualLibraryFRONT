@@ -73,4 +73,15 @@ export class AuthService {
     }
   }
 
+  getCurrentUser(): Observable<any> {
+    const userId = this.getUserId();
+    if (!userId) {
+      return new Observable(observer => {
+        observer.error('User not logged in');
+        observer.complete();
+      });
+    }
+    return this.http.get(`${this.baseUrl}/${userId}`);
+  }
+
 }

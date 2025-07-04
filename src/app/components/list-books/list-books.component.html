@@ -15,7 +15,7 @@
     </section>
 
     <section>
-      <h4> Categories </h4>
+      <h4><span class="cat-emoji">🗂️</span> Categories </h4>
       <div *ngFor="let category of categories">
         <label>
           <input
@@ -42,9 +42,8 @@
       </div>
     </section>
   </aside>
-  <div class="main-content">
-    <h2 class="all-books-title">📖 All Books</h2>
-    <!-- Top bar: search -->
+  <div class="main-content list-pretty">
+    <h2 class="all-books-title"><span class="hero-emoji">📚</span> All Books</h2>
     <div class="search-bar-wrapper">
       <input
         class="search-bar"
@@ -53,8 +52,9 @@
         placeholder="Search by title..."
       />
     </div>
+    <div class="section-divider"></div>
     <cdk-virtual-scroll-viewport
-      class="book-list"
+      class="book-list pretty-gradient"
       [itemSize]="260"
       [style.height.px]="800"
       (scrolledIndexChange)="onScroll($event)"

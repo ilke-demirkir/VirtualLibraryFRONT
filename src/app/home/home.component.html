@@ -1,21 +1,37 @@
-<div class="hero-section">
-  <h1>Welcome to Virtual Library!</h1>
-  <p class="hero-tagline">Discover, read, and enjoy thousands of books from every genre.</p>
-  <a routerLink="/books/list" class="hero-btn">Browse Books</a>
-</div>
+<div class="main-content home-container home-pretty">
+  <div class="hero-section">
+    <h1><span class="hero-emoji">📚</span> Welcome to Virtual Library!</h1>
+    <p class="hero-tagline">Discover, read, and enjoy thousands of books from every genre.</p>
+    <a routerLink="/books/list" class="hero-btn">Browse Books</a>
+  </div>
 
-<div class="featured-section" *ngIf="featuredBooks.length">
-  <h3 class="featured-title">Featured Books</h3>
-  <div class="featured-scroller" #featuredScroller (mouseenter)="onScrollerEnter()" (mouseleave)="onScrollerLeave()">
-    <ng-container *ngFor="let repeat of [0,1]">
-      <div class="featured-card" *ngFor="let book of featuredBooks">
-        <img [src]="book.image || 'assets/placeholder.png'" [alt]="book.name" class="featured-cover" />
-        <div class="featured-info">
-          <div class="featured-name">{{ book.name }}</div>
-          <div class="featured-author">by {{ book.author }}</div>
+  <div class="section-divider"></div>
+
+  <div class="featured-section pretty-gradient" *ngIf="featuredBooks.length">
+    <h3 class="featured-title">Featured Books</h3>
+    <div class="featured-scroller" #featuredScroller (mouseenter)="onScrollerEnter()" (mouseleave)="onScrollerLeave()">
+      <ng-container *ngFor="let repeat of [0,1]">
+        <div class="featured-card" *ngFor="let book of featuredBooks">
+          <img [src]="book.image || 'assets/placeholder.png'" [routerLink]="['/books', book.id]" [alt]="book.name" class="featured-cover" />
+          <div class="featured-info">
+            <div class="featured-name">{{ book.name }}</div>
+            <div class="featured-author">by {{ book.author }}</div>
+          </div>
         </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <div class="popular-categories-section" *ngIf="popularCategories.length">
+    <h3 class="popular-categories-title"><span class="cat-emoji">🗂️</span> Popular Categories</h3>
+    <div class="popular-categories-list">
+      <div class="category-chip" *ngFor="let cat of popularCategories" (click)="onCategoryClick(cat.category)">
+        <span class="category-name">{{ cat.category }}</span>
+        <span class="category-count">({{ cat.count }})</span>
       </div>
-    </ng-container>
+    </div>
   </div>
 </div>
 

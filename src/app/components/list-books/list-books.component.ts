@@ -9,6 +9,7 @@ import { ToastComponent } from '../toast/toast.component';
 import { AuthService } from '../../services/authService';
 import { BookImportService } from '../../services/book-importService';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-list-books',
   standalone: true,
@@ -43,23 +44,32 @@ export class ListBooksComponent implements OnInit {
     private api: BookService,
     private cartService: CartService,
     public auth: AuthService,
-    private bookImport: BookImportService // Assuming BookService has import functionality
+    private bookImport: BookImportService, // Assuming BookService has import functionality
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    // Fetch all books for static facets
-    this.api.getAllBooks('', 1, 10000, [],[],[], false).subscribe({
-      next: (resp: {items: Book[], totalCount: number}) => {
-        this.allBooksForFacets = resp.items;
+    // Read category from query params
+    this.route.queryParamMap.subscribe(params => {
+      const category = params.get('category');
+      if (category && !this.selectedCategories.has(category)) {
+        this.selectedCategories.clear();
+        this.selectedCategories.add(category);
+      }
+      // Fetch all books for static facets
+      this.api.getAllBooks('', 1, 10000, [],[],[], false).subscribe({
+        next: (resp: {items: Book[], totalCount: number}) => {
+          this.allBooksForFacets = resp.items;
+          this.initializeStaticFacets();
+        },
+        error: err => {}
+      });
+      this.api.books$.subscribe(books => {
+        this.books = books;
         this.initializeStaticFacets();
-      },
-      error: err => {}
+      });
+      this.resetAndLoad();
     });
-    this.api.books$.subscribe(books => {
-      this.books = books;
-      this.initializeStaticFacets();
-    } );
-    this.resetAndLoad();
   }
 
   private initializeStaticFacets(): void {

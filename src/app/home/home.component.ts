@@ -19,6 +19,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   isVisible:boolean = false;
   books$!: Observable<Book[]>;
   featuredBooks: Book[] = [];
+  popularCategories: { category: string, count: number }[] = [];
   @ViewChild('featuredScroller', { static: false }) featuredScroller!: ElementRef<HTMLDivElement>;
   private scrollInterval: any;
   private isHovered = false;
@@ -73,6 +74,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.bookService.getAllBooks('', 1, 12, [], [], [], true).subscribe(resp => {
       this.featuredBooks = resp.items;
     });
+    this.bookService.getPopularCategories(6).subscribe(categories => {
+      this.popularCategories = categories;
+    });
   }
 
   ngAfterViewInit(): void {
@@ -102,5 +106,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.scrollInterval) clearInterval(this.scrollInterval);
+  }
+
+  onCategoryClick(category: string) {
+    this.router.navigate(['/books/list'], { queryParams: { category } });
   }
 }
