@@ -1,0 +1,13 @@
+<button (click)="back()">← Back</button>
+    <h2>Order #{{order?.id}}</h2>
+    <p>Date: {{order?.createdAt | date:'full'}}</p>
+    <p>Total: {{order?.total | currency}}</p>
+    <table *ngIf="order">
+      <tr><th>Book</th><th>Qty</th><th>Unit</th><th>Line Total</th></tr>
+      <tr *ngFor="let i of order.items">
+        <td>{{i.bookName}}</td>
+        <td>{{i.quantity}}</td>
+        <td>{{i.unitPrice | currency}}</td>
+        <td>{{(i.unitPrice * i.quantity) | currency}}</td>
+      </tr>
+    </table>

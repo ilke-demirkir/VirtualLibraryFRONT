@@ -1,4 +1,30 @@
-<h1> App Component</h1>
-<a routerLink="/books/add">Add a book</a>
-<a routerLink="/books/list">List of books</a>
-<router-outlet />
+<nav class="navbar">
+  <div class="navbar-left">
+    <span class="app-logo">📚</span>
+    <span class="app-title">Virtual Library</span>
+  </div>
+  <input type="checkbox" id="nav-toggle" class="nav-toggle" hidden>
+  <label for="nav-toggle" class="nav-toggle-label">
+    <span></span>
+    <span></span>
+    <span></span>
+  </label>
+  <div class="navbar-links">
+    <a routerLink="/" routerLinkActive="active">Home</a>
+    <a *ngIf="auth.isAdmin()" routerLink="/books/add" routerLinkActive="active">Add a book</a>
+    <a routerLink="/books/list" routerLinkActive="active">List of books</a>
+    <a routerLink="/admin-import" routerLinkActive="active">Import Books</a>
+    <a routerLink="/favorites" routerLinkActive="active">Favorites</a>
+    <a *ngIf="(cartService.cart$ | async)?.length" routerLink="/cart" routerLinkActive="active" class="cart-link">
+      View Cart <span class="cart-badge">{{ (cartService.cart$ | async)?.length }}</span>
+    </a>
+    <ng-container *ngIf="orders$ | async as orders">
+      <a *ngIf="orders.length > 0" routerLink="/orders" routerLinkActive="active">My Orders</a>
+    </ng-container>
+    <a *ngIf="!auth.isLoggedIn()" routerLink="/login" class="nav-btn">Login</a>
+    <a *ngIf="!auth.isLoggedIn()" routerLink="/register" class="nav-btn">Register</a>
+    <button *ngIf="auth.isLoggedIn()" (click)="auth.logout()" class="nav-btn">Logout</button>
+  </div>
+</nav>
+<router-outlet></router-outlet>
+<app-toast></app-toast>

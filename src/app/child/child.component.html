@@ -1,6 +1,0 @@
-<h2>Book Detail Page</h2>
-<span [ngClass]="{'fav':book?.fav}">{{book?.name}} - {{book?.fav ? '\u2665' : '\u2661'}}
-    <button (click)="onToggle(book!.id)">Toggle Favorite</button>
-</span>
-<a routerLink="/home">← Back to Home</a>
-

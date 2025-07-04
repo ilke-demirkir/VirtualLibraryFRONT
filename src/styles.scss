@@ -1,1 +1,56 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body {
+  background: #f4f6fa;
+  color: #f1f1f1;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  transition: background 0.3s, color 0.3s;
+}
+
+html {
+  background: #181a20;
+}
+
+a, .btn {
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: #23242b;
+}
+::-webkit-scrollbar-thumb {
+  background: #35363f;
+  border-radius: 4px;
+}
+
+input, textarea, select {
+  background: #23242b;
+  color: #f1f1f1;
+  border: 1px solid #35363f;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 1rem;
+  transition: border 0.2s, background 0.2s;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: #4f8cff;
+  outline: none;
+  background: #23242b;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 300px;
+  margin: 40px auto;
+}
+
+

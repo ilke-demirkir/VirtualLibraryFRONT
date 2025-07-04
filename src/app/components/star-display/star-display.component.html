@@ -1,0 +1,7 @@
+<span class="stars">
+    <ng-container *ngFor="let i of range(max)">
+      <i class="material-icons">
+        {{ i < rating ? 'star' : 'star_border' }}
+      </i>
+    </ng-container>
+</span>

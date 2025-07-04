@@ -1,0 +1,30 @@
+<div class="orders-container">
+  <h2>Your Orders</h2>
+
+  <div *ngIf="loading" class="status">Loading orders…</div>
+  <div *ngIf="error" class="status error">{{ error }}</div>
+
+  <div class="orders-list" *ngIf="!loading && orders.length; else noOrders">
+    <div
+      class="order-card"
+      *ngFor="let o of orders"
+      (click)="view(o.id)"
+      tabindex="0"
+    >
+      <div class="order-top">
+        <div class="order-number">Order #{{ o.id }}</div>
+        <div class="order-date">{{ o.createdAt | date:'medium' }}</div>
+      </div>
+      <div class="order-bottom">
+        <div class="order-total">{{ o.total | currency }}</div>
+        <button class="btn btn-details" (click)="$event.stopPropagation(); view(o.id)">
+          View Details →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noOrders>
+    <div class="status">You have no past orders.</div>
+  </ng-template>
+</div>

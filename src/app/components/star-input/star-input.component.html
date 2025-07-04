@@ -1,0 +1,11 @@
+<span class="stars-input">
+    <ng-container *ngFor="let i of range(max)">
+      <i
+        class="material-icons"
+        (click)="rate(i + 1)"
+        [class.filled]="i < rating"
+      >
+        {{ i < rating ? 'star' : 'star_border' }}
+      </i>
+    </ng-container>
+  </span>

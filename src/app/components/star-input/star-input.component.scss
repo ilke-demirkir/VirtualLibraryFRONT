@@ -1,0 +1,8 @@
+.stars-input i {
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .stars-input i.filled {
+    color: gold;
+  }

@@ -1,0 +1,22 @@
+<div class="favorites-container">
+  <h2>Favorites</h2>
+  <div *ngIf="(favorites$ | async)?.length; else emptyState" class="favorites-list">
+    <div *ngFor="let book of favorites$ | async" class="favorite-card">
+      <div class="favorite-title">{{ book.name }}</div>
+      <div class="favorite-meta">
+        <span>By {{ book.author || '—' }}</span><br>
+        <span>Year: {{ book.year }}</span><br>
+        <span>Category: {{ book.category || '—' }}</span>
+      </div>
+      <div class="favorite-actions">
+        <button (click)="removeFromFav(book.id)">Remove</button>
+      </div>
+    </div>
+  </div>
+  <ng-template #emptyState>
+    <div class="empty-favorites">
+      <p>No favorites yet. Add some books to your favorites list!</p>
+    </div>
+  </ng-template>
+</div>
+  

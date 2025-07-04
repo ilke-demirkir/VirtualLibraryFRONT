@@ -1,0 +1,105 @@
+/* Modern dark theme for favorites */
+.favorites-container {
+  background: #f4f6fa;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px 0 rgba(80,120,180,0.08);
+  padding: 32px 28px 24px 28px;
+  max-width: 900px;
+  margin: 48px auto;
+  color: #222;
+  border: 1.5px solid #d0e7fa;
+  box-sizing: border-box;
+}
+
+h2 {
+  color: #3498db;
+  font-size: 1.4rem;
+  margin-bottom: 18px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.favorites-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.favorite-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px 0 rgba(80,120,180,0.08);
+  padding: 18px 16px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: #222;
+  border: 1.5px solid #d0e7fa;
+  transition: box-shadow 0.18s, border 0.18s;
+  position: relative;
+  min-height: 180px;
+}
+.favorite-card:hover {
+  box-shadow: 0 6px 24px 0 rgba(52, 152, 219, 0.13);
+  border-color: #3498db;
+}
+
+.favorite-title {
+  font-size: 1.13rem;
+  font-weight: 600;
+  color: #3498db;
+  margin-bottom: 8px;
+  letter-spacing: 0.2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.favorite-meta {
+  font-size: 0.97rem;
+  color: #355;
+  margin-bottom: 10px;
+}
+
+.favorite-actions {
+  margin-top: auto;
+  display: flex;
+  gap: 12px;
+}
+
+button, .btn {
+  background: #f0f6fc;
+  color: #3498db;
+  border: 1.5px solid #3498db;
+  border-radius: 6px;
+  padding: 7px 16px;
+  font-size: 0.98rem;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  box-shadow: 0 2px 8px 0 rgba(52, 152, 219, 0.10);
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+}
+button:hover, .btn:hover {
+  background: #3498db;
+  color: #fff;
+}
+
+.empty-favorites {
+  color: #7a8ca3;
+  text-align: center;
+  font-size: 1.1rem;
+  margin: 40px 0;
+}
+
+@media (max-width: 900px) {
+  .favorites-container {
+    padding: 18px 4vw 16px 4vw;
+    max-width: 98vw;
+  }
+  .favorites-list {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 14px;
+  }
+}

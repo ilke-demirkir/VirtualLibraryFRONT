@@ -1,15 +1,152 @@
-<h2> Book List</h2>
+<div class="list-container">
+  <aside class="sidebar">
+    <section>
+      <h4> Authors </h4>
+      <div *ngFor="let author of authors" >
+        <label>
+          <input
+            type="checkbox"
+            [checked]="selectedAuthors.has(author)"
+            (change)="toggleAuthor(author)"
+          />
+          {{ author }}
+        </label>
+      </div>
+    </section>
 
-<input
-  type="text"
-  [(ngModel)]="searchTerm"
-  (input)="filterBooks()"
-  placeholder="Search by name..."
-/>
+    <section>
+      <h4> Categories </h4>
+      <div *ngFor="let category of categories">
+        <label>
+          <input
+            type="checkbox"
+            [checked]="selectedCategories.has(category)"
+            (change)="toggleCategory(category)"
+          />
+          {{ category }}
+        </label>
+      </div>
+    </section>
 
-<ul>
-  <li *ngFor="let book of filteredBooks">
-    {{ book.name }} ({{ book.year }})
-    <button (click)="editBook(book.id)">Edit</button>
-  </li>
-</ul>
+    <section>
+      <h4> Years </h4>
+      <div *ngFor="let year of years">
+        <label>
+          <input
+            type="checkbox"
+            [checked]="selectedYears.has(year)"
+            (change)="toggleYear(year)"
+          />
+          {{ year }}
+        </label>
+      </div>
+    </section>
+  </aside>
+  <div class="main-content">
+    <h2 class="all-books-title">📖 All Books</h2>
+    <!-- Top bar: search -->
+    <div class="search-bar-wrapper">
+      <input
+        class="search-bar"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="updateSearch($event)"
+        placeholder="Search by title..."
+      />
+    </div>
+    <cdk-virtual-scroll-viewport
+      class="book-list"
+      [itemSize]="260"
+      [style.height.px]="800"
+      (scrolledIndexChange)="onScroll($event)"
+    >
+      <div *cdkVirtualFor="let book of books; trackBy: trackByBookId" class="book-card">
+        <div class="card-header">
+          <h3>{{ book.name }}</h3>
+          <img
+            class="book-cover"
+            [src]="book.image || 'assets/placeholder.png'"
+            alt="{{ book.name }} cover"
+            loading="lazy"
+          />
+          <div class="badges">
+            <span class="badge badge-stock" *ngIf="book.stock && book.stock > 0">In Stock</span>
+            <span class="badge badge-stock" *ngIf="book.stock === 0">Out of Stock</span>
+            <span class="badge badge-bestseller" *ngIf="book.isBestseller">Best Seller</span>
+            <span class="badge badge-discount" *ngIf="book.discount">{{ book.discount }}% OFF</span>
+          </div>
+          <button class="fav-btn" (click)="toggleFavorite(book.id)">
+            {{ book.fav ? '❤️' : '🤍' }}
+          </button>
+        </div>
+        <div class="meta">
+          <p>By {{ book.author || '—' }}</p>
+          <span>·</span>
+          <p>{{ book.year }}</p>
+          <span>·</span>
+          <p><strong>Category:</strong> {{ book.category || '—' }}</p>
+        </div>
+        <p class="price">
+          <ng-container *ngIf="book.price != null; else contactUs">
+            <strong>Price: </strong>
+            <ng-container *ngIf="book.discount; else fullPrice">
+              <del class="original-price">{{ book.price | currency }}</del>
+              <span class="discounted-price">
+                {{ (book.price * (100 - book.discount) / 100) | currency }}
+              </span>
+            </ng-container>
+            <ng-template #fullPrice>
+              <span class="normal-price">{{ book.price | currency }}</span>
+            </ng-template>
+          </ng-container>
+          <ng-template #contactUs>
+            <span class="contact-us">Contact us for price</span>
+          </ng-template>
+        </p>
+        <div class="tags" *ngIf="book.tags?.length">
+          <span class="tag" *ngFor="let t of book.tags">{{ t }}</span>
+        </div>
+        <div class="actions">
+          <a [routerLink]="['/books', book.id]" class="btn outline">Details</a>
+          <a *ngIf="auth.isAdmin()" [routerLink]="['/books', 'edit', book.id]" class="btn outline">Edit</a>
+          <button class="btn outline" (click)="addToCart(book.id)">🛒 Add to Cart</button>
+        </div>
+      </div>
+      <div *ngIf="loading" class="loading-indicator">
+        Loading more…
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </div>
+  <aside class="promotions-sidebar">
+    <h3>Promotions</h3>
+    <div class="promotion-card">
+      <h4>Summer Reading Sale!</h4>
+      <p>Get up to 50% off select titles. Limited time only.</p>
+      <button class="promo-btn">Shop Sale</button>
+    </div>
+    <div class="promotion-card">
+      <h4>Free Shipping</h4>
+      <p>On all orders over $50 this month.</p>
+      <button class="promo-btn">Learn More</button>
+    </div>
+    <div class="promotion-card">
+      <h4>New Arrivals</h4>
+      <p>Check out the latest additions to our library!</p>
+      <button class="promo-btn">Browse New Books</button>
+    </div>
+    <div class="promotion-card">
+      <h4>Refer a Friend</h4>
+      <p>Invite a friend and both get a $5 coupon!</p>
+      <button class="promo-btn">Refer Now</button>
+    </div>
+    <div class="promotion-card">
+      <h4>Monthly Book Club</h4>
+      <p>Join our club and get exclusive discounts and events.</p>
+      <button class="promo-btn">Join Club</button>
+    </div>
+    <div class="promotion-card">
+      <h4>Gift Cards</h4>
+      <p>Give the gift of reading with our digital gift cards.</p>
+      <button class="promo-btn">Buy Gift Card</button>
+    </div>
+  </aside>
+</div>

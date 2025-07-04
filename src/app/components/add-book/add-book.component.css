@@ -1,0 +1,59 @@
+.container {
+    max-width: 360px;
+    margin: 80px auto;
+    padding: 32px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    margin-bottom: 24px;
+    font-size: 24px;
+    text-align: center;
+    color: #3f51b5;
+  }
+  
+
+  input,
+  button {
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 15px;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 100%;
+  }
+  
+  button {
+    background-color: #3f51b5;
+    color: white;
+    font-weight: bold;
+    border: none; /* remove border since we style via background */
+    margin-top: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  button:hover {
+    background-color: #303f9f;
+  }
+
+  
+  .links {
+    margin-top: 16px;
+    text-align: center;
+  }
+  
+  .links a {
+    margin: 0 8px;
+    color: #3f51b5;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .links a:hover {
+    text-decoration: underline;
+  }
+  

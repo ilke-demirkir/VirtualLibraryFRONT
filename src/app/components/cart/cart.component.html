@@ -1,0 +1,53 @@
+<div class="cart-container" *ngIf="cartItems.length; else empty">
+    <h2>🛒 Your Cart</h2>
+    <!-- src/app/cart/cart.component.html -->
+
+<table *ngIf="cartItems.length" class="cart-table">
+  <thead>
+    <tr>
+      <th>Book</th>
+      <th>Qty</th>
+      <th>Unit Price</th>
+      <th>Total</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of cartItems">
+      <!-- Before: {{ item.book.name }} -->
+      <td>{{ item.bookName }}</td>
+
+      <td>{{ item.quantity }}</td>
+
+      <!-- Before: {{ item.book.price | currency }} -->
+      <td>{{ item.bookPrice | currency }}</td>
+
+      <td>{{ (item.bookPrice * item.quantity) | currency }}</td>
+
+      <td>
+        <button (click)="dec(item)">–</button>
+        <button (click)="inc(item)">+</button>
+        <button (click)="remove(item)">Remove</button>
+      </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="3"><strong>Subtotal</strong></td>
+      <td colspan="2">{{ subtotal | currency }}</td>
+    </tr>
+  </tfoot>
+</table>
+
+<div class="cart-actions">
+  <button class="btn btn--primary" routerLink="/checkout">
+    Proceed to Checkout 🛒
+  </button>
+</div>
+  </div>
+  
+  <ng-template #empty>
+    <p>Your cart is empty.</p>
+    <a routerLink="/books/list" class="btn">Browse Books</a>
+  </ng-template>
+  

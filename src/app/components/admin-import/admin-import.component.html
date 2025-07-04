@@ -1,0 +1,18 @@
+<div class="admin-import">
+    <h2>Admin: Import Books</h2>
+    <div class="import-bar">
+      <input
+        [(ngModel)]="importQuery"
+        placeholder="Enter title to import"
+        class="form-control"
+      />
+      <button
+        (click)="onImport()"
+        [disabled]="!importQuery.trim() || isLoading"
+        class="btn btn-primary"
+      >
+        {{ isLoading ? 'Importing...' : 'Import' }}
+      </button>
+    </div>
+    <p *ngIf="message" class="import-message">{{ message }}</p>
+  </div>
