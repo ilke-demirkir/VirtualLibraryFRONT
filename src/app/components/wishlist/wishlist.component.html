@@ -1,0 +1,36 @@
+<div *ngIf="wishlistService.items$ | async as list">
+  <ul *ngIf="list.length > 0; else emptyList" class="wishlist-list">
+    <li *ngFor="let item of list" class="wishlist-card">
+      <ng-container *ngIf="getBookById(item.bookId) as book">
+        <div class="wishlist-card-content">
+          <img *ngIf="book.image" [src]="book.image" [alt]="book.name + ' cover'" class="wishlist-book-cover" />
+          <div class="wishlist-book-details">
+            <div class="wishlist-book-title"><strong>{{ book.name }}</strong></div>
+            <p><strong>Author:</strong> {{ book.author || 'Unknown' }}</p>
+            <p><strong>Year:</strong> {{ book.year }}</p>
+            <p><strong>Price:</strong>
+              <ng-container *ngIf="book.discount; else fullPrice">
+                <del>{{ book.price | number:'1.2-2' }} USD</del>
+                <span class="discounted">{{ (book.price! * (100 - book.discount) / 100) | currency }}</span>
+              </ng-container>
+              <ng-template #fullPrice>
+                {{ book.price | currency }}
+              </ng-template>
+            </p>
+            <p><strong>Stock:</strong> {{ book.stock }}</p>
+            <p><strong>Rating:</strong> {{ book.averageRating | number: '1.1-1' }} / 5</p>
+            <div class="wishlist-actions">
+              <button (click)="removeFromWishlist(item)" class="wishlist-remove-btn">Remove</button>
+              <button (click)="viewDetails(book.id)" class="wishlist-view-btn">View Details</button>
+              <button (click)="addToCart(book.id)" class="wishlist-cart-btn">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </li>
+  </ul>
+  <ng-template #emptyList>
+    <p>Your wishlist is empty.</p>
+    <button (click)="browseBooks()">Browse Books</button>
+  </ng-template>
+</div>

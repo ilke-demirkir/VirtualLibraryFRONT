@@ -77,6 +77,7 @@ export class AddBookComponent {
       },
       error: (error) => {
         console.error('Error adding book:', error);
+        ToastComponent.show('Failed to add book. Please try again.');
       }
     });
   }

@@ -4,6 +4,7 @@ import { AuthService } from '../../services/authService';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ToastComponent } from '../toast/toast.component';
 
 @Component({
   selector: 'app-register',
@@ -25,6 +26,8 @@ export class RegisterComponent {
       },
       error: (error) => {
         console.error('Registration failed:', error);
+        const msg = error?.error?.message || error?.error || 'Registration failed. Please try again.';
+        ToastComponent.show(msg);
       }
     });
   }

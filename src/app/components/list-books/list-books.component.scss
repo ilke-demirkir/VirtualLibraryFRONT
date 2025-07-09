@@ -1,5 +1,17 @@
+// Brown + Warm Theme Color Palette
+$warm-brown: #8B4513;
+$dark-brown: #654321;
+$light-cream: #F5F5DC;
+$warm-beige: #F0E68C;
+$accent-gold: #DAA520;
+$text-dark: #2F1B14;
+$text-light: #8B7355;
+$border-warm: #CD853F;
+$card-bg: #FFF8DC;
+$success-green: #228B22;
+
 body {
-  background: #f4f6fa;
+  background: linear-gradient(135deg, $light-cream 0%, $warm-beige 100%);
 }
 
 .list-container {
@@ -16,29 +28,51 @@ body {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  background: #f4f6fa;
+  background: transparent;
 }
 
 .search-bar-wrapper {
   margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  
+  .search-bar {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    border: 1.5px solid $border-warm;
+    border-radius: 6px;
+    font-size: 1.05rem;
+    background: $light-cream;
+    color: $text-dark;
+    transition: border 0.18s, background 0.18s;
+    margin-bottom: 2px;
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.10);
+    
+    &:focus {
+      border-color: $accent-gold;
+      background: $card-bg;
+      outline: none;
+    }
+  }
 }
 
 .sidebar {
   width: 220px;
   flex-shrink: 0;
   padding: 20px;
-  background: #f0f6fc;
-  border: 1.5px solid #d0e7fa;
+  background: $light-cream;
+  border: 1.5px solid $border-warm;
   border-radius: 12px;
   max-height: calc(100vh - 120px);
   overflow-y: auto;
-  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.18);
-  color: #333;
+  box-shadow: 0 2px 16px 0 rgba(139,69,19,0.10);
+  color: $text-dark;
 
   section {
     margin-bottom: 2rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid #35363f;
+    border-bottom: 1px solid $border-warm;
     &:last-child {
       border-bottom: none;
       margin-bottom: 0;
@@ -49,7 +83,7 @@ body {
   h4 {
     margin: 0 0 0.5rem 0;
     font-size: 1.05rem;
-    color: #3498db;
+    color: $warm-brown;
     letter-spacing: 0.5px;
     font-weight: 600;
   }
@@ -60,16 +94,16 @@ body {
     gap: 8px;
     margin-bottom: 8px;
     font-size: 0.97rem;
-    color: #355;
+    color: $text-light;
     cursor: pointer;
     transition: color 0.15s;
     &:hover {
-      color: #fff;
+      color: $accent-gold;
     }
   }
 
   input[type="checkbox"] {
-    accent-color: #4f8cff;
+    accent-color: $accent-gold;
     width: 16px;
     height: 16px;
     margin-right: 6px;
@@ -84,16 +118,19 @@ body {
   padding-bottom: 64px;
   position: relative;
   display: block;
-  background: #eaf4fb;
+  background: $warm-beige;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px 0 rgba(139,69,19,0.08);
+  border: 1.5px solid $border-warm;
 }
 
 .book-card {
   height: 260px;
   width: 100%;
-  background: #23242b;
-  border: 1.5px solid #35363f;
+  background: $card-bg;
+  border: 1.5px solid $border-warm;
   border-radius: 10px;
-  box-shadow: 0 2px 8px 0 rgba(44, 62, 80, 0.13);
+  box-shadow: 0 2px 8px 0 rgba(139,69,19,0.13);
   padding: 12px 10px 10px 10px;
   display: flex;
   flex-direction: column;
@@ -104,11 +141,11 @@ body {
   max-width: 100%;
   box-sizing: border-box;
   font-size: 0.97rem;
-  color: #f1f1f1;
+  color: $text-dark;
   &:hover {
     transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 4px 16px 0 rgba(0,0,0,0.18);
-    border-color: #4f8cff;
+    box-shadow: 0 4px 16px 0 rgba(139,69,19,0.18);
+    border-color: $accent-gold;
   }
 }
 
@@ -126,7 +163,7 @@ body {
     font-size: 1.02rem;
     margin-right: 0.75rem;
     flex-shrink: 1;
-    color: #8ab4f8;
+    color: $warm-brown;
     font-weight: 600;
     letter-spacing: 0.2px;
     overflow: hidden;
@@ -143,15 +180,15 @@ body {
     margin-right: 0.5rem;
     flex-shrink: 0;
     flex: 0 0 auto;
-    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.18);
-    border: 1.5px solid #35363f;
-    background: #23242b;
+    box-shadow: 0 2px 8px 0 rgba(139,69,19,0.18);
+    border: 1.5px solid $border-warm;
+    background: $card-bg;
     transition: transform 0.18s, box-shadow 0.18s;
   }
 
   .book-cover:hover {
     transform: scale(1.04) rotate(-1deg);
-    box-shadow: 0 4px 16px 0 rgba(76, 110, 245, 0.18);
+    box-shadow: 0 4px 16px 0 rgba(218,165,32,0.18);
   }
 
   .card-actions {
@@ -179,7 +216,7 @@ body {
     font-size: 1.3rem;
     margin-left: 0.5rem;
     flex: 0 0 auto;
-    color: #fbbc04;
+    color: $accent-gold;
     transition: color 0.18s;
     filter: drop-shadow(0 1px 2px #0008);
     flex-shrink: 0;
@@ -191,7 +228,7 @@ body {
 
 .meta {
   font-size: 0.92rem;
-  color: #355;
+  color: $text-light;
   margin-bottom: 10px;
   display: flex;
   flex-wrap: wrap;
@@ -206,15 +243,26 @@ body {
   margin-bottom: 10px;
 
   .original-price {
-    color: #888;
+    color: $text-light;
     margin-right: 4px;
     text-decoration: line-through;
   }
 
   .discounted-price {
-    color: #8ab4f8;
+    color: $accent-gold;
     font-weight: bold;
     font-size: 1.08rem;
+  }
+
+  .normal-price {
+    color: $accent-gold;
+    font-weight: bold;
+    font-size: 1.08rem;
+  }
+
+  .contact-us {
+    color: $text-light;
+    font-style: italic;
   }
 }
 
@@ -223,8 +271,8 @@ body {
 
   .tag {
     display: inline-block;
-    background: #35363f;
-    color: #8ab4f8;
+    background: $light-cream;
+    color: $warm-brown;
     padding: 3px 8px;
     border-radius: 4px;
     font-size: 0.85rem;
@@ -244,8 +292,8 @@ body {
     flex: 1;
     text-align: center;
     padding: 8px 0;
-    border: 1.5px solid #3498db;
-    color: #3498db;
+    border: 1.5px solid $accent-gold;
+    color: $warm-brown;
     background: transparent;
     border-radius: 4px;
     font-size: 1rem;
@@ -253,39 +301,39 @@ body {
     font-weight: 500;
     letter-spacing: 0.2px;
     transition: background 0.18s, color 0.18s, box-shadow 0.18s;
-    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.10);
+    box-shadow: 0 1px 4px 0 rgba(139,69,19,0.10);
     cursor: pointer;
 
     &.outline:hover, &:hover {
-      background: #3498db;
+      background: $accent-gold;
       color: #fff;
-      box-shadow: 0 2px 8px 0 rgba(76, 110, 245, 0.18);
+      box-shadow: 0 2px 8px 0 rgba(218,165,32,0.18);
     }
   }
 }
 
 .search-bar {
   margin-bottom: 20px;
-  background: #fff;
-  color: #222;
-  border: 1.5px solid #d0e7fa;
+  background: $card-bg;
+  color: $text-dark;
+  border: 1.5px solid $border-warm;
 
   input {
     width: 100%;
     padding: 10px;
-    border: 1.5px solid #35363f;
+    border: 1.5px solid $border-warm;
     border-radius: 6px;
     font-size: 1.05rem;
-    background: #23242b;
-    color: #f1f1f1;
+    background: $light-cream;
+    color: $text-dark;
     transition: border 0.18s, background 0.18s;
     margin-bottom: 2px;
     box-shadow: 0 1px 4px 0 rgba(0,0,0,0.10);
   }
 
   input:focus {
-    border-color: #3498db;
-    background: #eaf4fb;
+    border-color: $accent-gold;
+    background: $card-bg;
     outline: none;
   }
 }
@@ -293,7 +341,7 @@ body {
 .debug-info {
   text-align: center;
   padding: 20px;
-  color: #8ab4f8;
+  color: $warm-brown;
   font-size: 1.1rem;
   
   p {
@@ -304,7 +352,7 @@ body {
 .loading-indicator {
   text-align: center;
   padding: 20px;
-  color: #8ab4f8;
+  color: $warm-brown;
   font-size: 1.1rem;
   font-weight: 500;
 }
@@ -313,17 +361,17 @@ body {
   width: 100%;
   max-width: 300px;
   padding: 10px 12px;
-  border: 1.5px solid #35363f;
+  border: 1.5px solid $border-warm;
   border-radius: 6px;
   font-size: 1.05rem;
-  background: #23242b;
-  color: #f1f1f1;
+  background: $light-cream;
+  color: $text-dark;
   transition: border 0.18s, background 0.18s;
   box-shadow: 0 1px 4px 0 rgba(0,0,0,0.10);
   
   &:focus {
-    border-color: #4f8cff;
-    background: #23242b;
+    border-color: $accent-gold;
+    background: $card-bg;
     outline: none;
   }
 }
@@ -332,13 +380,13 @@ body {
   width: 320px;
   flex-shrink: 0;
   padding: 28px 22px;
-  background: linear-gradient(135deg, #fffbe7 60%, #ffe082 100%);
-  border: 1.5px solid #ffe082;
+  background: $light-cream;
+  border: 1.5px solid $border-warm;
   border-radius: 16px;
   max-height: calc(100vh - 48px);
   min-height: 600px;
   overflow-y: auto;
-  box-shadow: 0 4px 24px 0 rgba(255, 193, 7, 0.13);
+  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.18);
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -347,7 +395,7 @@ body {
 
 .promotions-sidebar h3 {
   margin-top: 0;
-  color: #b28704;
+  color: $warm-brown;
   font-size: 1.35rem;
   margin-bottom: 1.2rem;
   letter-spacing: 0.5px;
@@ -355,12 +403,12 @@ body {
 }
 
 .promotion-card {
-  background: #fffde7;
-  border: 1.5px solid #ffe082;
+  background: $card-bg;
+  border: 1.5px solid $border-warm;
   border-radius: 12px;
   padding: 18px 16px;
   margin-bottom: 0.7rem;
-  box-shadow: 0 2px 12px 0 rgba(255, 193, 7, 0.10);
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.10);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -368,27 +416,28 @@ body {
 }
 
 .promotion-card:hover {
-  box-shadow: 0 6px 24px 0 rgba(255, 193, 7, 0.18);
+  box-shadow: 0 6px 24px 0 rgba(0,0,0,0.18);
   transform: translateY(-2px) scale(1.02);
+  border-color: $accent-gold;
 }
 
 .promotion-card h4 {
   margin: 0 0 0.4rem 0;
-  color: #b28704;
+  color: $warm-brown;
   font-size: 1.12rem;
   font-weight: 600;
 }
 
 .promotion-card p {
   margin: 0;
-  color: #7c6f1a;
+  color: $text-light;
   font-size: 1.01rem;
 }
 
 .promotion-card .promo-btn {
   margin-top: 1rem;
-  background: #ffe082;
-  color: #b28704;
+  background: $accent-gold;
+  color: #fff;
   border: none;
   border-radius: 6px;
   padding: 7px 18px;
@@ -399,8 +448,8 @@ body {
 }
 
 .promotion-card .promo-btn:hover {
-  background: #ffd54f;
-  color: #7c6f1a;
+  background: $warm-brown;
+  color: #fff;
 }
 
 @media (max-width: 1200px) {
@@ -431,14 +480,15 @@ body {
 }
 
 .all-books-title {
-  color: #8ab4f8;
+  color: $warm-brown;
   font-size: 2rem;
   font-weight: 600;
   margin-bottom: 1.2rem;
+  text-align: center;
 }
 
 .list-pretty {
-  box-shadow: 0 8px 40px 0 rgba(80,120,180,0.10), 0 1.5px 0 #eaf4fb;
+  box-shadow: 0 8px 40px 0 rgba(0,0,0,0.10), 0 1.5px 0 $border-warm;
   border-radius: 18px;
   margin-top: 18px;
   margin-bottom: 18px;
@@ -448,16 +498,16 @@ body {
   width: 100%;
   max-width: 900px;
   height: 2.5px;
-  background: linear-gradient(90deg, #eaf4fb 0%, #8ab4f8 50%, #eaf4fb 100%);
+  background: linear-gradient(90deg, $light-cream 0%, $warm-brown 50%, $light-cream 100%);
   opacity: 0.18;
   margin: 36px auto 36px auto;
   border-radius: 2px;
 }
 
 .pretty-gradient {
-  background: linear-gradient(120deg, #eaf4fb 80%, #d0e7fa 100%);
+  background: $light-cream;
   border-radius: 16px;
-  box-shadow: 0 2px 16px 0 rgba(80,120,180,0.06);
+  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.06);
   padding-bottom: 12px;
 }
 
@@ -465,12 +515,12 @@ body {
   font-size: 2.2rem;
   vertical-align: middle;
   margin-right: 8px;
-  filter: drop-shadow(0 1px 2px #8ab4f8cc);
+  filter: drop-shadow(0 1px 2px rgba(138, 180, 248, 0.8));
 }
 
 .cat-emoji {
   font-size: 1.3rem;
   vertical-align: middle;
   margin-right: 7px;
-  filter: drop-shadow(0 1px 2px #8ab4f8cc);
+  filter: drop-shadow(0 1px 2px rgba(138, 180, 248, 0.8));
 }

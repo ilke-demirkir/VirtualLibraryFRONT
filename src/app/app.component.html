@@ -13,23 +13,23 @@
     <a routerLink="/" routerLinkActive="active">Home</a>
     <a *ngIf="auth.isAdmin()" routerLink="/books/add" routerLinkActive="active">Add a book</a>
     <a routerLink="/books/list" routerLinkActive="active">List of books</a>
-    <a routerLink="/admin-import" routerLinkActive="active">Import Books</a>
-    <a routerLink="/favorites" routerLinkActive="active">Favorites</a>
+    <a *ngIf="auth.isAdmin()" routerLink="/admin-import" routerLinkActive="active">Import Books</a>
+    <a *ngIf="auth.isLoggedIn()" routerLink="/favorites" routerLinkActive="active">Favorites</a>
     <a *ngIf="(cartService.cart$ | async)?.length" routerLink="/cart" routerLinkActive="active" class="cart-link">
       View Cart <span class="cart-badge">{{ (cartService.cart$ | async)?.length }}</span>
     </a>
-    <ng-container *ngIf="orders$ | async as orders">
-      <a *ngIf="orders.length > 0" routerLink="/orders" routerLinkActive="active">My Orders</a>
-    </ng-container>
+  
     <a *ngIf="!auth.isLoggedIn()" routerLink="/login" class="nav-btn">Login</a>
     <a *ngIf="!auth.isLoggedIn()" routerLink="/register" class="nav-btn">Register</a>
     <a *ngIf="auth.isLoggedIn()" routerLink="/user-profile" routerLinkActive="active" class="nav-btn">
-      <span * class="user-icon">👤</span> Profile
+      <span class="user-icon">👤</span> Profile
     </a>
     <button *ngIf="auth.isLoggedIn()" (click)="auth.logout()" class="nav-btn">Logout</button>
+    <a *ngIf="auth.isAdmin()" routerLink="/add-notification" class="nav-btn"> Add Notification</a>
   </div>
-  <div class="navbar-right">
-    <span class="user-greeting" *ngIf="user$ | async as user" >Hello, {{ user.username }}!</span>
+  <div *ngIf="auth.isLoggedIn()" class="navbar-right">
+    <app-notifications></app-notifications>
+    <span class="user-greeting" *ngIf="user$ | async as user">{{ user ? 'Hello, ' + user.username + '!' : '' }}</span>
     <span class="user-role" *ngIf="auth.isAdmin()">[Admin]</span>
   </div>
 </nav>

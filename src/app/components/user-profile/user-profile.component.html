@@ -3,12 +3,40 @@
     <img [src]="avatarUrl" class="avatar" alt="User avatar" />
     <div class="profile-info">
       <h2 class="username">{{ user?.username || '—' }}</h2>
-      <div class="email">{{ user?.email || '—' }}</div>
-      <div class="bio">{{ bio }}</div>
+      <div class="email" *ngIf="!editMode">{{ user?.email || '—' }}</div>
+      <div class="bio" *ngIf="!editMode">{{ bio }}</div>
       <div class="created-at">
         <span class="label">Member since:</span>
         <span>{{ createdAt }}</span>
       </div>
+      <div class="orders">
+        <span routerLink="/orders"> Previous Orders </span>
+      </div>
+      <div class="wishlist" routerLink="/wishlist">
+        View your wishlist
+      </div>
+      <button *ngIf="!editMode" class="edit-btn" (click)="startEdit()">Edit Profile</button>
+      <form *ngIf="editMode" class="edit-form" (ngSubmit)="saveEdit()">
+        <label>Username:
+          <input type="text" [(ngModel)]="editUser.username" name="username" required />
+        </label>
+        <label>Email:
+          <input type="email" [(ngModel)]="editUser.email" name="email" required />
+        </label>
+        <label>Password:
+          <input type="password" [(ngModel)]="editUser.password" name="password" autocomplete="new-password" placeholder="Leave blank to keep current pass" />
+        </label>
+        <label>Bio:
+          <textarea [(ngModel)]="editUser.bio" name="bio" rows="3"></textarea>
+        </label>
+        <label>Avatar URL:
+          <input type="text" [(ngModel)]="editUser.avatarUrl" name="avatarUrl" />
+        </label>
+        <div class="edit-actions">
+          <button type="submit" class="save-btn">Save</button>
+          <button type="button" class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

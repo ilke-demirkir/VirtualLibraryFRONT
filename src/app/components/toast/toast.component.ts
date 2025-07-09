@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal, effect } from '@angular/core';
+import { Component, signal, effect, Injectable } from '@angular/core';
 
 @Component({
   selector: 'app-toast',

@@ -6,10 +6,11 @@ import { BookService } from '../services/bookService';
 import { Observable } from 'rxjs';
 import { Book } from '../models/book.model';
 import { ListBooksComponent } from '../components/list-books/list-books.component';
+import { AuthService } from '../services/authService';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, ListBooksComponent,RouterLink],
+  imports: [CommonModule,RouterLink],
   standalone: true,
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
@@ -24,7 +25,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private scrollInterval: any;
   private isHovered = false;
 
-  constructor(private router:Router, private bookService: BookService) {console.log("HomeComponent constructor called");}
+  constructor(private router:Router, private bookService: BookService, private auth: AuthService) {console.log("HomeComponent constructor called");}
 
   goToChild(book: Book) {
     try {
@@ -77,6 +78,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.bookService.getPopularCategories(6).subscribe(categories => {
       this.popularCategories = categories;
     });
+    // Only call wishlist/review endpoints if logged in
+    if (this.auth.isLoggedIn()) {
+      // Example: if you have wishlist or review loading here, call them
+      // this.wishlistService.load();
+      // this.bookService.loadReviews(...);
+    }
   }
 
   ngAfterViewInit(): void {

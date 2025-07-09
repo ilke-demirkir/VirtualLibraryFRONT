@@ -1,6 +1,7 @@
 <div class="main-content home-container home-pretty">
   <div class="hero-section">
     <h1><span class="hero-emoji">📚</span> Welcome to Virtual Library!</h1>
+    <div class="hero-divider"></div>
     <p class="hero-tagline">Discover, read, and enjoy thousands of books from every genre.</p>
     <a routerLink="/books/list" class="hero-btn">Browse Books</a>
   </div>
@@ -8,7 +9,7 @@
   <div class="section-divider"></div>
 
   <div class="featured-section pretty-gradient" *ngIf="featuredBooks.length">
-    <h3 class="featured-title">Featured Books</h3>
+    <h3 class="featured-title"><span class="icon">🌟</span> Featured Books</h3>
     <div class="featured-scroller" #featuredScroller (mouseenter)="onScrollerEnter()" (mouseleave)="onScrollerLeave()">
       <ng-container *ngFor="let repeat of [0,1]">
         <div class="featured-card" *ngFor="let book of featuredBooks">
@@ -25,7 +26,7 @@
   <div class="section-divider"></div>
 
   <div class="popular-categories-section" *ngIf="popularCategories.length">
-    <h3 class="popular-categories-title"><span class="cat-emoji">🗂️</span> Popular Categories</h3>
+    <h3 class="popular-categories-title"><span class="icon">🗂️</span> Popular Categories</h3>
     <div class="popular-categories-list">
       <div class="category-chip" *ngFor="let cat of popularCategories" (click)="onCategoryClick(cat.category)">
         <span class="category-name">{{ cat.category }}</span>

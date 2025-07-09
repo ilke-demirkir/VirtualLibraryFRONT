@@ -1,0 +1,29 @@
+<div *ngIf="!auth.isAdmin()" class="relative inline-block">
+  <button (click)="open = !open" class="notification-bell">
+    🔔
+    <span *ngIf="(notificationService.unreadCount$ | async) as cnt; else noBadge"
+          class="notification-badge">{{ cnt }}</span>
+    <ng-template #noBadge></ng-template>
+  </button>
+  <div *ngIf="open" class="notification-dropdown">
+    <ul class="notification-list">
+      <li *ngFor="let n of notificationsWithMessage"
+          class="notification-item"
+          [class.unread]="!n.isRead">
+        <div class="notification-message">
+          <div>{{ n.message }}</div>
+          <div class="notification-timestamp">{{ n.timestamp | date:'short' }}</div>
+        </div>
+        <button *ngIf="!n.isRead"
+                (click)="markAsRead(n); $event.stopPropagation()"
+                class="notification-mark-read">✓</button>
+        <button (click)="deleteNotification(n); $event.stopPropagation()"
+                class="notification-delete" title="Delete notification"> Delete </button>
+      </li>
+      <li *ngIf="notificationsWithMessage.length === 0"
+          class="notification-item text-center text-gray-500">
+        No notifications
+      </li>
+    </ul>
+  </div>
+</div>

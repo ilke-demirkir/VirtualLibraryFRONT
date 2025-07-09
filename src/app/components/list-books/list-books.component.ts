@@ -10,6 +10,7 @@ import { AuthService } from '../../services/authService';
 import { BookImportService } from '../../services/book-importService';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-list-books',
   standalone: true,
@@ -45,7 +46,8 @@ export class ListBooksComponent implements OnInit {
     private cartService: CartService,
     public auth: AuthService,
     private bookImport: BookImportService, // Assuming BookService has import functionality
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -143,9 +145,20 @@ export class ListBooksComponent implements OnInit {
   }
 
   addToCart(id: number): void {
-    this.cartService.addToCart(id);
-    this.cartService.loadCart().subscribe(() => {
-      ToastComponent.show('Book added to cart!');
+    if (!this.auth.isLoggedIn()) {
+      ToastComponent.show('Please log in to add items to cart');
+      this.router.navigate(['/login']);
+      return;
+    }
+    
+    this.cartService.addToCart(id).subscribe({
+      next: () => {
+        ToastComponent.show('Book added to cart!');
+      },
+      error: (err) => {
+        // Let the interceptor handle the toast
+        console.error('Add to cart failed:', err);
+      }
     });
   }
 

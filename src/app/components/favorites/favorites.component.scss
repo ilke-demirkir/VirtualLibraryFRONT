@@ -1,31 +1,21 @@
 /* Modern dark theme for favorites */
 .favorites-container {
-  background: #f4f6fa;
-  border-radius: 14px;
-  box-shadow: 0 4px 24px 0 rgba(80,120,180,0.08);
-  padding: 32px 28px 24px 28px;
-  max-width: 900px;
-  margin: 48px auto;
-  color: #222;
-  border: 1.5px solid #d0e7fa;
-  box-sizing: border-box;
+  min-height: 100vh;
+  width: 100vw;
+  padding: 32px 0;
+  background: linear-gradient(120deg, #f8f1e4 80%, #e7d3b3 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-h2 {
-  color: #3498db;
-  font-size: 1.4rem;
-  margin-bottom: 18px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
+.favorites-content {
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 24px;
 }
 
-.favorites-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 24px;
-}
-
-.favorite-card {
+.favorites-card {
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 8px 0 rgba(80,120,180,0.08);
@@ -39,15 +29,69 @@ h2 {
   position: relative;
   min-height: 180px;
 }
+
+.favorites-btn, .orders, .wishlist {
+  display: inline-block;
+  background: #a67c52;
+  color: #fff;
+  margin-top: 10px;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 24px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 2px 8px 0 rgba(139, 69, 19, 0.08);
+}
+.favorites-btn:not(:last-child), .orders {
+  margin-right: 14px;
+}
+.favorites-btn:hover, .orders:hover, .wishlist:hover {
+  background: #8d6748;
+  color: #ffe6b3;
+}
+
+h2 {
+  color: #8d6748;
+  font-size: 1.4rem;
+  margin-bottom: 18px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.favorites-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+.favorite-card {
+  background: rgba(255,255,255,0.92);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px 0 rgba(139, 69, 19, 0.08);
+  padding: 18px 16px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: #654321;
+  border: 1.5px solid #c9a66b;
+  transition: box-shadow 0.18s, border 0.18s;
+  position: relative;
+  min-height: 180px;
+}
 .favorite-card:hover {
-  box-shadow: 0 6px 24px 0 rgba(52, 152, 219, 0.13);
-  border-color: #3498db;
+  box-shadow: 0 6px 24px 0 rgba(139, 69, 19, 0.13);
+  border-color: #a67c52;
 }
 
 .favorite-title {
   font-size: 1.13rem;
   font-weight: 600;
-  color: #3498db;
+  color: #8d6748;
   margin-bottom: 8px;
   letter-spacing: 0.2px;
   overflow: hidden;
@@ -58,7 +102,7 @@ h2 {
 
 .favorite-meta {
   font-size: 0.97rem;
-  color: #355;
+  color: #6d4c2b;
   margin-bottom: 10px;
 }
 
@@ -69,37 +113,49 @@ h2 {
 }
 
 button, .btn {
-  background: #f0f6fc;
-  color: #3498db;
-  border: 1.5px solid #3498db;
+  background: #f8f1e4;
+  color: #a67c52;
+  border: 1.5px solid #a67c52;
   border-radius: 6px;
   padding: 7px 16px;
   font-size: 0.98rem;
   font-weight: 500;
   letter-spacing: 0.2px;
-  box-shadow: 0 2px 8px 0 rgba(52, 152, 219, 0.10);
+  box-shadow: 0 2px 8px 0 rgba(139, 69, 19, 0.10);
   cursor: pointer;
   transition: background 0.18s, color 0.18s, box-shadow 0.18s;
 }
 button:hover, .btn:hover {
-  background: #3498db;
+  background: #a67c52;
   color: #fff;
 }
 
 .empty-favorites {
-  color: #7a8ca3;
+  color: #a67c52;
   text-align: center;
   font-size: 1.1rem;
   margin: 40px 0;
 }
 
 @media (max-width: 900px) {
-  .favorites-container {
-    padding: 18px 4vw 16px 4vw;
-    max-width: 98vw;
-  }
   .favorites-list {
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    padding: 24px 4vw 24px 4vw;
+  }
+  .favorites-card {
+    /* Remove grid properties here */
+    padding: 18px 8px 16px 8px;
+  }
+}
+
+@media (max-width: 600px) {
+  .favorites-list {
+    grid-template-columns: 1fr;
+    padding: 16px 2vw 16px 2vw;
+  }
+  .favorites-card {
+    min-width: 0;
+    max-width: 98vw;
+    padding: 16px 2vw 16px 2vw;
   }
 }

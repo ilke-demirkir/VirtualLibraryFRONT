@@ -5,6 +5,7 @@ import {
 } from '@angular/core';
 import { PaymentService } from '../../services/paymentService';
 import { CommonModule } from '@angular/common';
+import { ToastComponent } from '../toast/toast.component';
 
 @Component({
   selector: 'app-checkout',
@@ -32,6 +33,7 @@ export class CheckoutComponent implements OnInit {
       error: err => {
         console.error(err);
         this.error = 'Could not load payment form.';
+        ToastComponent.show('Could not load payment form. Please try again.');
         this.loading = false;
       }
     });

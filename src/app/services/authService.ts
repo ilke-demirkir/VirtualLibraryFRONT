@@ -33,7 +33,15 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('jwt');
+    // Clear any cached user data
+    this.clearUserData();
     this.router.navigate(['/login']); // Redirect to login after logout
+  }
+
+  clearUserData() {
+    // Clear any cached user information
+    // This ensures fresh data is loaded when a new user logs in
+    localStorage.removeItem('userData');
   }
   isAdmin(): boolean {
     const token = this.getToken();
@@ -82,6 +90,17 @@ export class AuthService {
       });
     }
     return this.http.get(`${this.baseUrl}/${userId}`);
+  }
+
+  editUser(data: any): Observable<any> {
+    const userId = this.getUserId();
+    if (!userId) {
+      return new Observable(observer => {
+        observer.error('User not logged in');
+        observer.complete();
+      });
+    }
+    return this.http.patch(`${this.baseUrl}/${userId}`, data);
   }
 
 }

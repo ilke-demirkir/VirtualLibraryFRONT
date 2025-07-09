@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, switchMap } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { CartItem } from '../models/cart-item.model';
+import { AuthService } from './authService';
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
@@ -17,8 +18,10 @@ export class CartService {
   refreshCart(){
     this.loadCart().subscribe();
   }
-  constructor(private http: HttpClient) {
-    this.refreshCart();
+  constructor(private http: HttpClient, private auth: AuthService) {
+    if (this.auth.isLoggedIn()) {
+      this.refreshCart();
+    }
   }
  
   // initial load or reload
@@ -29,21 +32,18 @@ export class CartService {
   }
 
   // add new or increment existing
-  addToCart(bookId: number, qty = 1): void {
-    this.http.post(this.apiUrl, { bookId, quantity: qty })
-      .pipe(switchMap(() => this.loadCart()))
-      .subscribe();   // loadCart() itself calls tap(...) to overwrite the subject
-  }  
+  addToCart(bookId: number, qty = 1) {
+    return this.http.post(this.apiUrl, { bookId, quantity: qty })
+      .pipe(switchMap(() => this.loadCart()));
+  }
   updateQuantity(id: number, qty: number) {
-    this.http.patch(`${this.apiUrl}/${id}`, { quantity: qty })
-      .pipe(switchMap(() => this.loadCart()))
-      .subscribe();
+    return this.http.patch(`${this.apiUrl}/${id}`, { quantity: qty })
+      .pipe(switchMap(() => this.loadCart()));
   }
   
   removeFromCart(id: number) {
-    this.http.delete(`${this.apiUrl}/${id}`)
-      .pipe(switchMap(() => this.loadCart()))
-      .subscribe();
+    return this.http.delete(`${this.apiUrl}/${id}`)
+      .pipe(switchMap(() => this.loadCart()));
   }
   getTotal(): number {
     return this.cartSubject.value.reduce(
@@ -52,9 +52,7 @@ export class CartService {
     );
   }
 
-  clearCart(): void {
-    this.http.post<void>(`${this.apiUrl}/checkout`, {}).subscribe(() => {
-      this.cartSubject.next([]);
-    });
+  clearCart() {
+    return this.http.post<void>(`${this.apiUrl}/checkout`, {});
   }
 }

@@ -6,6 +6,7 @@ import { AuthService } from '../../services/authService';
 import { Router, RouterLink } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { ToastComponent } from '../toast/toast.component';
+import { NotificationService } from '../../services/notificaitionService';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -14,7 +15,12 @@ import { ToastComponent } from '../toast/toast.component';
   standalone: true
 })
 export class LoginComponent implements OnInit {
-  constructor(private authService:AuthService, private router: Router, private route:ActivatedRoute) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private notificationService: NotificationService
+  ) { }
   showMessage = false;
   data:LoginRequest = { username: '', password: '' };
   login() {
@@ -22,11 +28,13 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.data).subscribe({
       next: (response) => {
         this.authService.saveToken(response.token);
+        this.notificationService.loadNotifications();
         console.log('Login successful:', response);
         this.router.navigate(['/home']);  // Navigate to home after successful login
       },
       error: (error) => {
         console.error('Login failed:', error);
+        ToastComponent.show('Login failed. Please check your credentials and try again.');
       }
     });
   }

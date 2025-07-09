@@ -2,13 +2,15 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  min-height: 60vh;
+  min-height: 100vh;
+  width: 100vw;
   padding: 32px 0;
+  background: linear-gradient(120deg, #f8f1e4 80%, #e7d3b3 100%); // gradient covers whole page
 }
 
 .profile-card {
-  background: linear-gradient(120deg, #eaf4fb 80%, #d0e7fa 100%);
-  box-shadow: 0 8px 40px 0 rgba(80,120,180,0.10), 0 1.5px 0 #eaf4fb;
+  background: rgba(255,255,255,0.92); // subtle card overlay
+  box-shadow: 0 8px 40px 0 rgba(139, 69, 19, 0.10), 0 1.5px 0 #f8f1e4;
   border-radius: 18px;
   padding: 36px 32px 32px 32px;
   display: flex;
@@ -17,6 +19,7 @@
   min-width: 320px;
   max-width: 400px;
   width: 100%;
+  border: 2px solid #c9a66b;
 }
 
 .avatar {
@@ -24,10 +27,10 @@
   height: 108px;
   border-radius: 50%;
   object-fit: cover;
-  box-shadow: 0 2px 16px 0 rgba(80,120,180,0.10);
+  box-shadow: 0 2px 16px 0 rgba(139, 69, 19, 0.10);
   margin-bottom: 18px;
-  border: 3px solid #8ab4f8;
-  background: #f4f6fa;
+  border: 3px solid #c9a66b;
+  background: #f4f1ea;
 }
 
 .profile-info {
@@ -37,19 +40,19 @@
 .username {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #3498db;
+  color: #8d6748;
   margin-bottom: 6px;
 }
 
 .email {
-  color: #355;
+  color: #6d4c2b;
   font-size: 1.05rem;
   margin-bottom: 16px;
 }
 
 .bio {
   font-size: 1.08rem;
-  color: #333;
+  color: #654321;
   margin-bottom: 18px;
   min-height: 24px;
   font-style: italic;
@@ -57,21 +60,130 @@
 
 .created-at {
   font-size: 0.98rem;
-  color: #7a8ca3;
+  color: #a67c52;
   margin-top: 8px;
 }
 
 .label {
-  color: #8ab4f8;
+  color: #c9a66b;
   font-weight: 600;
   margin-right: 4px;
 }
 
 .profile-loading {
   text-align: center;
-  color: #8ab4f8;
+  color: #c9a66b;
   font-size: 1.2rem;
   padding: 48px 0;
+}
+
+.orders {
+  margin-right: 14px;
+}
+.orders, .wishlist {
+  display: inline-block;
+  background: #a67c52;
+  color: #fff;
+  margin-top: 10px;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 24px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 2px 8px 0 rgba(139, 69, 19, 0.08);
+}
+.orders:hover, .wishlist:hover {
+  background: #8d6748;
+  color: #ffe6b3;
+}
+
+.edit-btn {
+  margin-top: 18px;
+  background: #a67c52;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 24px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.edit-btn:hover {
+  background: #8d6748;
+}
+
+.edit-form {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: stretch;
+}
+.edit-form label {
+  font-size: 1rem;
+  color: #8d6748;
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+.edit-form input[type="email"],
+.edit-form input[type="text"],
+.edit-form input[type="password"],
+.edit-form textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1.5px solid #c9a66b;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #f8f1e4;
+  margin-top: 2px;
+  transition: border 0.18s;
+}
+.edit-form input:focus,
+.edit-form textarea:focus {
+  border-color: #a67c52;
+  outline: none;
+}
+.edit-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+  justify-content: flex-end;
+}
+.save-btn {
+  background: #a67c52;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.save-btn:hover {
+  background: #8d6748;
+}
+.cancel-btn {
+  background: #e0e0e0;
+  color: #333;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.cancel-btn:hover {
+  background: #bdbdbd;
 }
 
 @media (max-width: 600px) {

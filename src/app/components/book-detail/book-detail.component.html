@@ -1,124 +1,136 @@
 <div class="container">
-  <h2>
-    {{ book.name }}
-    <!-- Badges -->
-    <span *ngIf="book.isBestseller" class="badge badge--bestseller">🔥 Bestseller</span>
-    <span *ngIf="book.discount" class="badge badge--discount">{{ book.discount }}% OFF</span>
-  </h2>
+  <div class="book-detail-content">
+    <div class="book-detail-card">
+      <h2>
+        {{ book.name }}
+        <!-- Badges -->
+        <span *ngIf="book.isBestseller" class="badge badge--bestseller">🔥 Bestseller</span>
+        <span *ngIf="book.discount" class="badge badge--discount">{{ book.discount }}% OFF</span>
+      </h2>
 
-  <div class="book-meta">
-    <p><strong>Author:</strong> {{ book.author || 'Unknown' }}</p>
-    <p><strong>Year:</strong> {{ book.year }}</p>
-    <p><strong>Published:</strong> {{ book.publishYear }}</p>
-    <p><strong>Last Updated:</strong> {{ book.lastUpdate | date:'medium' }}</p>
+      <div class="book-meta">
+        <p><strong>Author:</strong> {{ book.author || 'Unknown' }}</p>
+        <p><strong>Year:</strong> {{ book.year }}</p>
+        <p><strong>Published:</strong> {{ book.publishYear }}</p>
+        <p><strong>Last Updated:</strong> {{ book.lastUpdate | date:'medium' }}</p>
 
-    <p><strong>Price:</strong>
-      <ng-container *ngIf="book.discount; else fullPrice">
-        <del>{{ book.price | number:'1.2-2' }} USD</del>
-        <span class="discounted">{{ (book.price! * (100 - book.discount) / 100) | currency }}</span>
-      </ng-container>
-      <ng-template #fullPrice>
-        {{ book.price | currency }}
-      </ng-template>
-    </p>
+        <p><strong>Price:</strong>
+          <ng-container *ngIf="book.discount; else fullPrice">
+            <del>{{ book.price | number:'1.2-2' }} USD</del>
+            <span class="discounted">{{ (book.price! * (100 - book.discount) / 100) | currency }}</span>
+          </ng-container>
+          <ng-template #fullPrice>
+            {{ book.price | currency }}
+          </ng-template>
+        </p>
 
-    <p><strong>Stock:</strong> {{ book.stock }}</p>
-    <p><strong>Rating:</strong> {{ book.averageRating | number: '1.1-1' }} / 5</p>
+        <p><strong>Stock:</strong> {{ book.stock }}</p>
+        <p><strong>Rating:</strong> {{ book.averageRating | number: '1.1-1' }} / 5</p>
 
-    <p><strong>Tags:</strong>
-      <span *ngIf="book.tags?.length; else noTags">
-        <span class="tag" *ngFor="let tag of book.tags">{{ tag }}</span>
-      </span>
-      <ng-template #noTags>—</ng-template>
-    </p>
-  </div>
-
-  <div class="cover" *ngIf="book.image">
-    <img [src]="book.image" alt="{{ book.name }} cover" />
-  </div>
-
-  <div class="description" *ngIf="book.description">
-    <h3>Description</h3>
-    <p>{{ book.description }}</p>
-  </div>
-
-  <div class="actions">
-    <button class="btn" (click)="toggleFavorite()">
-      {{ book.fav ? 'Unfavorite 💔' : 'Favorite ❤️' }}
-    </button>
-    <button class="btn btn--buy" (click)="addToCart(book.id)">
-      Add to Cart 🛒
-    </button>
-  </div>
-
-  <button
-    *ngIf="auth.isLoggedIn()"
-    class="btn"
-    (click)="toggleReviewForm()"
-  >
-    {{ showReviewForm ? 'Cancel' : 'Add Review' }}
-  </button>
-
-  <!-- Inline review form -->
-  <form #f="ngForm" *ngIf="showReviewForm" (ngSubmit)="submitReview()"  class="review-form">
-    <label>Rating:</label>
-    <app-star-input
-      [(rating)]="newReview.rating"
-      [max]="5"
-    ></app-star-input>
-
-    <label>Comment:</label>
-    <textarea
-      name="comment"
-      rows="3"
-      [(ngModel)]="newReview.comment"
-      placeholder="Write your thoughts…"
-    ></textarea>
-
-    <button
-      type="submit"
-      class="btn"
-      [disabled]="!newReview.rating"
-    >
-      Submit Review
-    </button>
-  </form>
-
-   
-
-  <section class="reviews-list">
-    <h4>User Reviews</h4>
-  
-    <!-- If there are reviews, list them -->
-    <div *ngIf="reviews.length; else noReviews">
-      <div *ngFor="let r of reviews" class="review-card">
-        <!-- star display for each rating -->
-        <app-star-display [rating]="r.rating" [max]="5"></app-star-display>
-        <div class="review-meta">
-          <strong>{{ r.userName }}</strong>
-          <small>{{ r.createdAt | date:'short' }}</small>
-
-          <button
-          *ngIf="isAdmin || r.userId === currentUserId"
-          class="btn btn--small btn--danger"
-          (click)="deleteReview(r.id)"
-        >
-          Delete
-        </button>
-        </div>
-        <p class="review-comment">{{ r.comment || '—' }}</p>
+        <p><strong>Tags:</strong>
+          <span *ngIf="book.tags?.length; else noTags">
+            <span class="tag" *ngFor="let tag of book.tags">{{ tag }}</span>
+          </span>
+          <ng-template #noTags>—</ng-template>
+        </p>
       </div>
-    </div>
-  
-    <!-- Fallback when there are none -->
-    <ng-template #noReviews>
-      <p class="no-reviews">No reviews yet. Be the first to review!</p>
-    </ng-template>
-  </section>
-  
 
-  <div class="links">
-    <a routerLink="/books/list" class="btn">Back to List</a>
-    <a *ngIf="auth.isAdmin" [routerLink]="['/books/edit', book.id]" class="btn">Edit</a>
+      <div class="cover" *ngIf="book.image">
+        <img [src]="book.image" alt="{{ book.name }} cover" />
+      </div>
+
+      <div class="description" *ngIf="book.description">
+        <h3>Description</h3>
+        <p>{{ book.description }}</p>
+      </div>
+
+      <div class="actions">
+        <button class="btn" (click)="toggleFavorite()">
+          {{ book.fav ? 'Unfavorite 💔' : 'Favorite ❤️' }}
+        </button>
+        
+        <button *ngIf="!isInWishlist" class="btn" (click)="addToWishList()" >
+          Add to Wishlist
+        </button>
+
+        <button *ngIf="isInWishlist" class="btn" (click)="removeFromWishlist()" >
+          Remove from Wishlist
+        </button>
+
+        <button class="btn btn--buy" (click)="addToCart(book.id)">
+          Add to Cart 🛒
+        </button>
+
+      </div>
+
+      <button
+        *ngIf="auth.isLoggedIn()"
+        class="btn"
+        (click)="toggleReviewForm()"
+      >
+        {{ showReviewForm ? 'Cancel' : 'Add Review' }}
+      </button>
+
+      <!-- Inline review form -->
+      <form #f="ngForm" *ngIf="showReviewForm" (ngSubmit)="submitReview()"  class="review-form">
+        <label>Rating:</label>
+        <app-star-input
+          [(rating)]="newReview.rating"
+          [max]="5"
+        ></app-star-input>
+
+        <label>Comment:</label>
+        <textarea
+          name="comment"
+          rows="3"
+          [(ngModel)]="newReview.comment"
+          placeholder="Write your thoughts…"
+        ></textarea>
+
+        <button
+          type="submit"
+          class="btn"
+          [disabled]="!newReview.rating"
+        >
+          Submit Review
+        </button>
+      </form>
+    </div>
+
+    <section class="reviews-list">
+      <h4>User Reviews</h4>
+    
+      <!-- If there are reviews, list them -->
+      <div *ngIf="reviews.length; else noReviews">
+        <div *ngFor="let r of reviews" class="review-card">
+          <!-- star display for each rating -->
+          <app-star-display [rating]="r.rating" [max]="5"></app-star-display>
+          <div class="review-meta">
+            <strong>{{ r.userName }}</strong>
+            <small>{{ r.createdAt | date:'short' }}</small>
+
+            <button
+            *ngIf="isAdmin || r.userId === currentUserId"
+            class="btn btn--small btn--danger"
+            (click)="deleteReview(r.id)"
+          >
+            Delete
+          </button>
+          </div>
+          <p class="review-comment">{{ r.comment || '—' }}</p>
+        </div>
+      </div>
+    
+      <!-- Fallback when there are none -->
+      <ng-template #noReviews>
+        <p class="no-reviews">No reviews yet. Be the first to review!</p>
+      </ng-template>
+    </section>
+    
+
+    <div class="links">
+      <a routerLink="/books/list" class="btn">Back to List</a>
+      <a *ngIf="auth.isAdmin()" [routerLink]="['/books/edit', book.id]" class="btn">Edit</a>
+    </div>
   </div>
 </div>

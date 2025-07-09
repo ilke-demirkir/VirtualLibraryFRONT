@@ -1,13 +1,55 @@
-<button (click)="back()">← Back</button>
-    <h2>Order #{{order?.id}}</h2>
-    <p>Date: {{order?.createdAt | date:'full'}}</p>
-    <p>Total: {{order?.total | currency}}</p>
-    <table *ngIf="order">
-      <tr><th>Book</th><th>Qty</th><th>Unit</th><th>Line Total</th></tr>
-      <tr *ngFor="let i of order.items">
-        <td>{{i.bookName}}</td>
-        <td>{{i.quantity}}</td>
-        <td>{{i.unitPrice | currency}}</td>
-        <td>{{(i.unitPrice * i.quantity) | currency}}</td>
-      </tr>
-    </table>
+<div class="order-detail-container">
+  <div class="order-detail-content">
+    <button class="back-button" (click)="back()">← Back to Orders</button>
+    
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading">
+      Loading order details...
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error" class="error">
+      {{ error }}
+    </div>
+
+    <!-- Order Content -->
+    <div *ngIf="!loading && !error && order">
+      <section class="headers">
+        <header>
+          <h2>Order #{{order.id}}</h2>
+          <div class="order-meta">
+            <span class="order-date">Placed on: <strong>{{order.createdAt | date:'fullDate'}}</strong></span>
+            <span class="order-total">Total: <strong>{{order.total | currency}}</strong></span>
+          </div>
+        </header>
+        <div class="order-divider"></div>
+      </section>
+
+      <h3 class="items-title"><span class="icon">📦</span> Order Items</h3>
+      <table class="order-table">
+        <thead>
+          <tr>
+            <th>Book</th>
+            <th>Qty</th>
+            <th>Unit Price</th>
+            <th>Line Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let i of order.items">
+            <td>{{i.bookName}}</td>
+            <td>{{i.quantity}}</td>
+            <td>{{i.unitPrice | currency}}</td>
+            <td>{{(i.unitPrice * i.quantity) | currency}}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="order-total-row">
+            <td colspan="3" style="text-align:right;font-weight:700;">Order Total</td>
+            <td style="font-weight:700; color:#8B4513;">{{order.total | currency}}</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>

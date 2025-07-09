@@ -76,7 +76,25 @@ export const routes: Routes = [
         path: "user-profile",
         loadComponent: () => import('./components/user-profile/user-profile.component').then(m => m.UserProfileComponent),
         canActivate: [AuthGuard] // Assuming you have an AuthGuard implemented
+    },
+    
+    {
+        path: "wishlist",
+        loadComponent: () => import('./components/wishlist/wishlist.component').then(m => m.WishlistComponent),
+        canActivate: [AuthGuard]
+    },
+    {
+        path:"notfications",
+        loadComponent: () => import('./components/notifications/notifications.component').then(m => m.NotificationsComponent),
+        canActivate: [AuthGuard] // Assuming you have an AuthGuard implemented
+    },
+    {
+        path: "add-notification",
+        loadComponent: () => import('./components/add-notification/add-notification.component').then(m => m.AddNotificationComponent),
+        canActivate: [AuthGuard] // Assuming you have an AuthGuard implemented
     }
+
+
 
 
 
