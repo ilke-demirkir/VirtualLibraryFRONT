@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoginRequest, RegisterRequest, LoginResponse } from '../models/user.model';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
 interface JwtPayload {
@@ -12,6 +12,8 @@ interface JwtPayload {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private baseUrl = 'https://localhost:5038/api';
+  private authStateSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
+  public authState$ = this.authStateSubject.asObservable();
 
   constructor(private http: HttpClient, private router:Router) {}
 
@@ -25,6 +27,7 @@ export class AuthService {
 
   saveToken(token: string) {
     localStorage.setItem('jwt', token);
+    this.authStateSubject.next(true);
   }
 
   getToken(): string | null {
@@ -35,6 +38,7 @@ export class AuthService {
     localStorage.removeItem('jwt');
     // Clear any cached user data
     this.clearUserData();
+    this.authStateSubject.next(false);
     this.router.navigate(['/login']); // Redirect to login after logout
   }
 
@@ -42,6 +46,23 @@ export class AuthService {
     // Clear any cached user information
     // This ensures fresh data is loaded when a new user logs in
     localStorage.removeItem('userData');
+  }
+
+  // Method to clear all user-specific data across all services
+  clearAllUserData() {
+    this.clearUserData();
+    // Emit false to trigger data clearing in other services
+    this.authStateSubject.next(false);
+  }
+
+  // Method to handle user switching - clear old data and prepare for new user
+  switchUser() {
+    // Clear all cached data first
+    this.clearAllUserData();
+    // Small delay to ensure data is cleared, then emit true for new user
+    setTimeout(() => {
+      this.authStateSubject.next(true);
+    }, 100);
   }
   isAdmin(): boolean {
     const token = this.getToken();

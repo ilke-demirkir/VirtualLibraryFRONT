@@ -21,6 +21,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   loading = true;
   error = '';
   private sub?: Subscription;
+  private authSubscription?: Subscription;
   
   constructor(
     private svc: OrderService,
@@ -30,6 +31,32 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   ) {}
   
   ngOnInit() {
+    // Listen to authentication state changes
+    this.authSubscription = this.auth.authState$.subscribe(isLoggedIn => {
+      if (isLoggedIn) {
+        this.loadOrderDetail();
+      } else {
+        // Clear order details when user logs out
+        this.order = undefined;
+        this.loading = false;
+        this.error = '';
+      }
+    });
+
+    // Initial load if already logged in
+    if (this.auth.isLoggedIn()) {
+      this.loadOrderDetail();
+    } else {
+      this.loading = false;
+    }
+  }
+  
+  ngOnDestroy() {
+    if (this.sub) this.sub.unsubscribe();
+    if (this.authSubscription) this.authSubscription.unsubscribe();
+  }
+
+  private loadOrderDetail() {
     // Check if user is authenticated before making API calls
     if (!this.auth.isLoggedIn()) {
       this.loading = false;
@@ -48,10 +75,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
         ToastComponent.show('Failed to load order details.');
       }
     });
-  }
-  
-  ngOnDestroy() {
-    if (this.sub) this.sub.unsubscribe();
   }
   
   back() { this.router.navigate(['/orders']); }

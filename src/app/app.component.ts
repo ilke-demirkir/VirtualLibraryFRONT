@@ -50,20 +50,13 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     };
 
+    // Listen for authentication state changes
+    this.authSubscription = this.auth.authState$.subscribe(isLoggedIn => {
+      updateUserInfo();
+    });
+
     // Initial update
     updateUserInfo();
-
-    // Listen for authentication changes via router events
-    this.router.events.subscribe((event: RouterEvent) => {
-      if (event instanceof NavigationError) {
-        ToastComponent.show('Navigation error: ' + (event.error?.message || 'Failed to load page.'));
-      }
-      
-      // Update user info when navigating to login/logout routes
-      if ('url' in event && event.url && (event.url.includes('/login') || event.url.includes('/logout'))) {
-        setTimeout(() => updateUserInfo(), 100); // Small delay to ensure auth state is updated
-      }
-    });
 
     // Listen for network status changes
     this.networkStatus.isOnline$.subscribe(isOnline => {

@@ -20,9 +20,11 @@ export class RegisterComponent {
     this.authService.register(this.data).subscribe({
       next: (response) => {
         this.authService.saveToken(response.token);
+        // Use switchUser to clear old data and prepare for new user
+        this.authService.switchUser();
         console.log('Registration successful:', response);
         // Optionally, redirect to login or home page
-        this.router.navigate(['/login']);
+        this.router.navigate(['/home']);
       },
       error: (error) => {
         console.error('Registration failed:', error);

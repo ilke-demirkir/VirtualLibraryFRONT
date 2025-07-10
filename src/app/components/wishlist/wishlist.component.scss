@@ -99,3 +99,22 @@
 .wishlist-cart-btn:hover {
   background: #2e7031;
 }
+
+.status {
+  text-align: center;
+  font-size: 1rem;
+  color: #a67c52;
+
+  &.error {
+    color: #d32f2f;
+  }
+}
+
+h2 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #8d6748;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}

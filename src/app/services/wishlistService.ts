@@ -1,25 +1,47 @@
-import { Injectable, ɵɵngDeclareInjectable } from "@angular/core";
+import { Injectable, ɵɵngDeclareInjectable, OnDestroy } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Book } from "../models/book.model";
-import { Observable,BehaviorSubject } from "rxjs";
+import { Observable, BehaviorSubject, Subscription } from "rxjs";
 import { tap } from 'rxjs/operators';
 import { WishlistItem } from "../models/wishlist.model";
 import { AuthService } from "./authService";
 
 @Injectable({providedIn:'root'})
-export class WishlistService{
+export class WishlistService implements OnDestroy {
     private apiUrl = 'https://localhost:5038/api'
     private _items = new BehaviorSubject<WishlistItem[]>([]);
     public items$ = this._items.asObservable()
+    private authSubscription?: Subscription;
     
     constructor(private http:HttpClient, private auth: AuthService){
         // Initialize with empty array so buttons show up
         this._items.next([]);
         
+        // Listen to authentication state changes
+        this.authSubscription = this.auth.authState$.subscribe(isLoggedIn => {
+            if (isLoggedIn) {
+                this.load();
+            } else {
+                // Clear wishlist data when user logs out
+                this._items.next([]);
+            }
+        });
+        
         // Only load wishlist if user is authenticated
         if (this.auth.isLoggedIn()) {
             this.load();
         }
+    }
+
+    ngOnDestroy() {
+        if (this.authSubscription) {
+            this.authSubscription.unsubscribe();
+        }
+    }
+
+    // Clear wishlist data (called when user switches)
+    clearWishlistData() {
+        this._items.next([]);
     }
 
     private load() {

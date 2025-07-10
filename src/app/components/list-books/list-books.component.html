@@ -1,65 +1,269 @@
 <div class="list-container">
-  <aside class="sidebar">
-    <section>
-      <h4> Authors </h4>
-      <div *ngFor="let author of authors" >
-        <label>
-          <input
-            type="checkbox"
-            [checked]="selectedAuthors.has(author)"
-            (change)="toggleAuthor(author)"
-          />
-          {{ author }}
-        </label>
-      </div>
-    </section>
-
-    <section>
-      <h4><span class="cat-emoji">🗂️</span> Categories </h4>
-      <div *ngFor="let category of categories">
-        <label>
-          <input
-            type="checkbox"
-            [checked]="selectedCategories.has(category)"
-            (change)="toggleCategory(category)"
-          />
-          {{ category }}
-        </label>
-      </div>
-    </section>
-
-    <section>
-      <h4> Years </h4>
-      <div *ngFor="let year of years">
-        <label>
-          <input
-            type="checkbox"
-            [checked]="selectedYears.has(year)"
-            (change)="toggleYear(year)"
-          />
-          {{ year }}
-        </label>
-      </div>
-    </section>
-  </aside>
-  <div class="main-content list-pretty">
-    <h2 class="all-books-title"><span class="hero-emoji">📚</span> All Books</h2>
-    <div class="search-bar-wrapper">
-      <input
-        class="search-bar"
-        [(ngModel)]="searchTerm"
-        (ngModelChange)="updateSearch($event)"
-        placeholder="Search by title..."
-      />
+  <!-- Enhanced Filter Panel -->
+  <aside class="sidebar" [class.expanded]="showFilters">
+    <div class="filter-header">
+      <h3>🔍 Filters</h3>
+      <button class="filter-toggle" (click)="toggleFilters()">
+        {{ showFilters ? '−' : '+' }}
+      </button>
     </div>
-    <div class="section-divider"></div>
-    <cdk-virtual-scroll-viewport
-      class="book-list pretty-gradient"
-      [itemSize]="260"
-      [style.height.px]="800"
-      (scrolledIndexChange)="onScroll($event)"
-    >
-      <div *cdkVirtualFor="let book of books; trackBy: trackByBookId" class="book-card">
+    
+    <div class="filter-content" *ngIf="showFilters">
+      <!-- Search Bar -->
+      <section class="filter-section">
+        <h4>🔎 Search</h4>
+        <input
+          class="search-input"
+          [(ngModel)]="filterState.searchTerm"
+          (ngModelChange)="updateSearch($event)"
+          placeholder="Search by title, author..."
+        />
+      </section>
+
+      <!-- Sort Options -->
+      <section class="filter-section">
+        <h4>📊 Sort By</h4>
+        <div class="sort-controls">
+          <select [(ngModel)]="filterState.sortBy" (change)="updateSorting(filterState.sortBy, filterState.sortOrder)">
+            <option value="name">Name</option>
+            <option value="price">Price</option>
+            <option value="rating">Rating</option>
+            <option value="year">Year</option>
+            <option value="author">Author</option>
+          </select>
+          <button 
+            class="sort-order-btn"
+            (click)="updateSorting(filterState.sortBy, filterState.sortOrder === 'asc' ? 'desc' : 'asc')"
+            [class.desc]="filterState.sortOrder === 'desc'"
+          >
+            {{ filterState.sortOrder === 'asc' ? '↑' : '↓' }}
+          </button>
+        </div>
+      </section>
+
+      <!-- Price Range -->
+      <section class="filter-section">
+        <h4>💰 Price Range</h4>
+        <div class="range-controls">
+          <input 
+            type="number" 
+            placeholder="Min"
+            [(ngModel)]="filterState.priceRange.min"
+            (change)="updatePriceRange(filterState.priceRange.min, filterState.priceRange.max)"
+            class="range-input"
+          />
+          <span>to</span>
+          <input 
+            type="number" 
+            placeholder="Max"
+            [(ngModel)]="filterState.priceRange.max"
+            (change)="updatePriceRange(filterState.priceRange.min, filterState.priceRange.max)"
+            class="range-input"
+          />
+        </div>
+        <div class="price-range-display">
+          {{ priceRanges.min | currency }} - {{ priceRanges.max | currency }}
+        </div>
+      </section>
+
+      <!-- Rating Range -->
+      <section class="filter-section">
+        <h4>⭐ Rating Range</h4>
+        <div class="range-controls">
+          <input 
+            type="number" 
+            min="0" 
+            max="5" 
+            step="0.1"
+            placeholder="Min"
+            [(ngModel)]="filterState.ratingRange.min"
+            (change)="updateRatingRange(filterState.ratingRange.min, filterState.ratingRange.max)"
+            class="range-input"
+          />
+          <span>to</span>
+          <input 
+            type="number" 
+            min="0" 
+            max="5" 
+            step="0.1"
+            placeholder="Max"
+            [(ngModel)]="filterState.ratingRange.max"
+            (change)="updateRatingRange(filterState.ratingRange.min, filterState.ratingRange.max)"
+            class="range-input"
+          />
+        </div>
+      </section>
+
+      <!-- Stock Filter -->
+      <section class="filter-section">
+        <h4>📦 Stock Status</h4>
+        <div class="radio-group">
+          <label>
+            <input 
+              type="radio" 
+              name="stock" 
+              value="all"
+              [(ngModel)]="filterState.stockFilter"
+              (change)="updateStockFilter('all')"
+            />
+            All Books
+          </label>
+          <label>
+            <input 
+              type="radio" 
+              name="stock" 
+              value="in-stock"
+              [(ngModel)]="filterState.stockFilter"
+              (change)="updateStockFilter('in-stock')"
+            />
+            In Stock
+          </label>
+          <label>
+            <input 
+              type="radio" 
+              name="stock" 
+              value="out-of-stock"
+              [(ngModel)]="filterState.stockFilter"
+              (change)="updateStockFilter('out-of-stock')"
+            />
+            Out of Stock
+          </label>
+        </div>
+      </section>
+
+      <!-- Quick Filters -->
+      <section class="filter-section">
+        <h4>⚡ Quick Filters</h4>
+        <div class="checkbox-group">
+          <label>
+            <input 
+              type="checkbox" 
+              [(ngModel)]="filterState.featured"
+              (ngModelChange)="resetAndLoad()"
+            />
+            Featured Books
+          </label>
+          <label>
+            <input 
+              type="checkbox" 
+              [(ngModel)]="filterState.discountOnly"
+              (ngModelChange)="resetAndLoad()"
+            />
+            On Sale Only
+          </label>
+          <label>
+            <input 
+              type="checkbox" 
+              [(ngModel)]="filterState.bestsellerOnly"
+              (ngModelChange)="resetAndLoad()"
+            />
+            Bestsellers Only
+          </label>
+        </div>
+      </section>
+
+      <!-- Authors -->
+      <section class="filter-section">
+        <h4>👤 Authors</h4>
+        <div class="filter-list">
+          <div *ngFor="let author of authors" class="filter-item">
+            <label>
+              <input
+                type="checkbox"
+                [checked]="filterState.selectedAuthors.has(author)"
+                (change)="toggleAuthor(author)"
+              />
+              {{ author }}
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Categories -->
+      <section class="filter-section">
+        <h4>🗂️ Categories</h4>
+        <div class="filter-list">
+          <div *ngFor="let category of categories" class="filter-item">
+            <label>
+              <input
+                type="checkbox"
+                [checked]="filterState.selectedCategories.has(category)"
+                (change)="toggleCategory(category)"
+              />
+              {{ category }}
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Years -->
+      <section class="filter-section">
+        <h4>📅 Years</h4>
+        <div class="filter-list">
+          <div *ngFor="let year of years" class="filter-item">
+            <label>
+              <input
+                type="checkbox"
+                [checked]="filterState.selectedYears.has(year)"
+                (change)="toggleYear(year)"
+              />
+              {{ year }}
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Clear Filters -->
+      <section class="filter-section">
+        <button class="clear-filters-btn" (click)="clearAllFilters()">
+          🗑️ Clear All Filters
+        </button>
+      </section>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content list-pretty">
+    <div class="content-header">
+      <h2 class="all-books-title">
+        <span class="hero-emoji">📚</span> All Books
+        <span class="results-count" *ngIf="totalCount > 0">
+          ({{ books.length }} of {{ totalCount }})
+        </span>
+      </h2>
+      
+      <!-- Active Filters Display -->
+      <div class="active-filters" *ngIf="activeFiltersCount > 0">
+        <span class="active-filters-label">Active Filters: {{ activeFiltersCount }}</span>
+        <button class="clear-filters-btn-small" (click)="clearAllFilters()">
+          Clear All
+        </button>
+      </div>
+
+      <!-- Filter Toggle for Mobile -->
+      <button class="mobile-filter-toggle" (click)="toggleFilters()">
+        🔍 Filters {{ activeFiltersCount > 0 ? '(' + activeFiltersCount + ')' : '' }}
+      </button>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div *ngIf="loading && books.length === 0" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Loading books...</p>
+    </div>
+
+    <!-- No Results -->
+    <div *ngIf="!loading && books.length === 0" class="no-results">
+      <h3>No books found</h3>
+      <p>Try adjusting your filters or search terms.</p>
+      <button class="clear-filters-btn" (click)="clearAllFilters()">
+        Clear All Filters
+      </button>
+    </div>
+
+    <!-- Book Grid -->
+    <div class="book-grid" #bookGrid (scroll)="onScroll($event)">
+      <div *ngFor="let book of books; trackBy: trackByBookId" class="book-card">
         <div class="card-header">
           <h3>{{ book.name }}</h3>
           <img
@@ -111,11 +315,28 @@
           <button class="btn outline" (click)="addToCart(book.id)">🛒 Add to Cart</button>
         </div>
       </div>
+      
+      <!-- Loading indicator -->
       <div *ngIf="loading" class="loading-indicator">
-        Loading more…
+        <div class="loading-spinner"></div>
+        <p>Loading more books...</p>
       </div>
-    </cdk-virtual-scroll-viewport>
+      
+      <!-- Load more button (alternative to auto-load) -->
+      <div *ngIf="!loading && hasMoreBooks" class="load-more-container">
+        <button class="load-more-btn" (click)="loadPage()">
+          Load More Books
+        </button>
+      </div>
+      
+      <!-- No more books indicator -->
+      <div *ngIf="!loading && !hasMoreBooks && books.length > 0" class="no-more-books">
+        <p>🎉 You've reached the end! No more books to load.</p>
+      </div>
+    </div>
   </div>
+
+  <!-- Promotions Sidebar -->
   <aside class="promotions-sidebar">
     <h3>Promotions</h3>
     <div class="promotion-card">

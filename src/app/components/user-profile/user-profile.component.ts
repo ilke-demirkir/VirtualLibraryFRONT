@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/authService';
 import { User } from '../../models/user.model';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ToastComponent } from '../toast/toast.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-profile',
@@ -13,15 +14,43 @@ import { ToastComponent } from '../toast/toast.component';
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit, OnDestroy {
   user: User | null = null;
   loading = true;
   editMode = false;
   editUser: Partial<User> = {};
+  private authSubscription?: Subscription;
 
   constructor(private auth: AuthService, private route:ActivatedRoute) {}
 
   ngOnInit(): void {
+    // Listen to authentication state changes
+    this.authSubscription = this.auth.authState$.subscribe(isLoggedIn => {
+      if (isLoggedIn) {
+        this.loadUserProfile();
+      } else {
+        // Clear user data when user logs out
+        this.user = null;
+        this.loading = false;
+        this.editMode = false;
+      }
+    });
+
+    // Initial load if already logged in
+    if (this.auth.isLoggedIn()) {
+      this.loadUserProfile();
+    } else {
+      this.loading = false;
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+    }
+  }
+
+  private loadUserProfile() {
     // Check if user is authenticated before making API calls
     if (!this.auth.isLoggedIn()) {
       this.loading = false;

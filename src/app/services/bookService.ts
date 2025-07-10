@@ -3,6 +3,8 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { Book } from "../models/book.model";
 import { Observable,BehaviorSubject } from "rxjs";
 import { tap } from 'rxjs/operators';
+import { AuthService } from "./authService";
+
 export interface PagedResult<T> {
     items: T[];
     totalCount: number;
@@ -17,7 +19,7 @@ export class BookService{
     }
     private apiUrl = "https://localhost:5038/api/books"; 
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private auth: AuthService) {
         this.loadBooks();
     }
     private booksSubject = new BehaviorSubject<Book[]>([]);
@@ -62,6 +64,12 @@ export class BookService{
 
       
     toggleFavorite(id: number) {
+        // Check authentication before making API call
+        if (!this.auth.isLoggedIn()) {
+            console.warn('User must be logged in to toggle favorites');
+            return;
+        }
+
         // find the current book
         const books = this.booksSubject.getValue();
         const book = books.find(b => b.id === id);

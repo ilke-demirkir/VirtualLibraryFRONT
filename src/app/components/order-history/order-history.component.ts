@@ -22,10 +22,37 @@ export class OrderHistoryComponent implements OnInit, OnDestroy {
   
   orders: OrderSummary[] = [];
   private sub?: Subscription;
+  private authSubscription?: Subscription;
   
   constructor(private svc: OrderService, private router: Router, private auth: AuthService) {}
   
   ngOnInit() {
+    // Listen to authentication state changes
+    this.authSubscription = this.auth.authState$.subscribe(isLoggedIn => {
+      if (isLoggedIn) {
+        this.loadOrders();
+      } else {
+        // Clear orders when user logs out
+        this.orders = [];
+        this.loading = false;
+        this.error = '';
+      }
+    });
+
+    // Initial load if already logged in
+    if (this.auth.isLoggedIn()) {
+      this.loadOrders();
+    } else {
+      this.loading = false;
+    }
+  }
+  
+  ngOnDestroy() {
+    if (this.sub) this.sub.unsubscribe();
+    if (this.authSubscription) this.authSubscription.unsubscribe();
+  }
+
+  private loadOrders() {
     // Check if user is authenticated before making API calls
     if (!this.auth.isLoggedIn()) {
       this.loading = false;
@@ -41,10 +68,6 @@ export class OrderHistoryComponent implements OnInit, OnDestroy {
         ToastComponent.show('Failed to load order history.');
       }
     });
-  }
-  
-  ngOnDestroy() {
-    if (this.sub) this.sub.unsubscribe();
   }
   
   view(id: number) {

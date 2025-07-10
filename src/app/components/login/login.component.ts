@@ -28,6 +28,8 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.data).subscribe({
       next: (response) => {
         this.authService.saveToken(response.token);
+        // Use switchUser to clear old data and prepare for new user
+        this.authService.switchUser();
         this.notificationService.loadNotifications();
         console.log('Login successful:', response);
         this.router.navigate(['/home']);  // Navigate to home after successful login

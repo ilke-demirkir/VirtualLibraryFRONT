@@ -1,3 +1,4 @@
+<h2> Your Wishlist</h2>
 <div *ngIf="wishlistService.items$ | async as list">
   <ul *ngIf="list.length > 0; else emptyList" class="wishlist-list">
     <li *ngFor="let item of list" class="wishlist-card">
@@ -30,7 +31,6 @@
     </li>
   </ul>
   <ng-template #emptyList>
-    <p>Your wishlist is empty.</p>
-    <button (click)="browseBooks()">Browse Books</button>
+    <div class="status">Your wishlist is empty.</div>
   </ng-template>
 </div>

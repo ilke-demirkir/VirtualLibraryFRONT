@@ -15,7 +15,7 @@
     <a routerLink="/books/list" routerLinkActive="active">List of books</a>
     <a *ngIf="auth.isAdmin()" routerLink="/admin-import" routerLinkActive="active">Import Books</a>
     <a *ngIf="auth.isLoggedIn()" routerLink="/favorites" routerLinkActive="active">Favorites</a>
-    <a *ngIf="(cartService.cart$ | async)?.length" routerLink="/cart" routerLinkActive="active" class="cart-link">
+    <a *ngIf="(cartService.cart$ | async)?.length && auth.isLoggedIn()" routerLink="/cart" routerLinkActive="active" class="cart-link">
       View Cart <span class="cart-badge">{{ (cartService.cart$ | async)?.length }}</span>
     </a>
   

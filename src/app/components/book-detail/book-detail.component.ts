@@ -35,6 +35,7 @@ export class BookDetailComponent implements OnInit, OnDestroy {
   isAdmin = false; 
   wishlist$!:Observable<WishlistItem[]>;
   isInWishlist = false;
+  private authSubscription!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -72,12 +73,32 @@ export class BookDetailComponent implements OnInit, OnDestroy {
         this.loadReviews(id);
         this.wishlistService.refreshWishlist();
       }
-  });
-}
+    });
+
+    // Listen to authentication state changes
+    this.authSubscription = this.auth.authState$.subscribe(isLoggedIn => {
+      if (isLoggedIn) {
+        // Reload user-specific data when user logs in
+        this.isAdmin = this.auth.isAdmin();
+        this.currentUserId = this.auth.getUserId() || 0;
+        this.loadReviews(this.bookId);
+        this.wishlistService.refreshWishlist();
+      } else {
+        // Clear user-specific data when user logs out
+        this.reviews = [];
+        this.isInWishlist = false;
+        this.isAdmin = false;
+        this.currentUserId = 0;
+      }
+    });
+  }
 
   ngOnDestroy(): void {
     if (this.sub) {
       this.sub.unsubscribe();
+    }
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
     }
   }
   
